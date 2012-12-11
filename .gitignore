@@ -38,3 +38,5 @@ leveldb/port/.DS_Store
 SexToys/SVWebViewController.bundle/.DS_Store
 
 leveldb/include/.DS_Store
+
+*. DS_Store
