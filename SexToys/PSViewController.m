@@ -12,6 +12,7 @@
 #import "DetailViewController.h"
 #import "ContentController.h"
 #import "AppDelegate.h"
+#import "ASIDownloadCache.h"
 
 
 
@@ -41,6 +42,7 @@ static BOOL isDeviceIPad() {
 
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) PSCollectionView *collectionView;
+@property (nonatomic, strong) ASIHTTPRequest *request;
 
 @end
 
@@ -60,7 +62,8 @@ page = _page,
 cateId = _cateId,
 cateName = _cateName,
 isFav = _isFav,
-userinfo = _userinfo;
+userinfo = _userinfo,
+request = _request;
 
 - (void)loadingStatus {
     
@@ -260,6 +263,9 @@ userinfo = _userinfo;
     
     [_loadingLabel release];
     
+    [_request cancel];
+    [_request release], _request = nil;
+    
     [super dealloc];
 }
 
@@ -386,8 +392,64 @@ userinfo = _userinfo;
     
     // Request
     NSURL *URL = [NSURL URLWithString:URLPath];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
+    self.request = [ASIHTTPRequest requestWithURL:URL];
+    
+    [_request setDownloadCache:[ASIDownloadCache sharedCache]];
+    [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
+    [_request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
+    //[[ASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:NO];
+    
+    [_request setCompletionBlock:^ {
+        
+        id res = [NSJSONSerialization JSONObjectWithData:[_request responseData] options:NSJSONReadingMutableContainers error:nil];
+        
+        if (res && [res isKindOfClass:[NSArray class]]) {
+            
+            if ([(NSArray *)res count] == 0) {
+                
+                _isLastPage = YES;
+                
+            } else {
+                
+                [self.items addObjectsFromArray:res];
+                
+                if (_page == 1) {
+                    
+                    [self.items removeAllObjects];
+                }
+                
+                _page++;
+                
+                [self.items addObjectsFromArray:res];
+                
+                [self dataSourceDidLoad];
+            }
+            
+        } else {
+            
+            [self dataSourceDidError];
+        }
+        
+        [self stopLoading];
+        
+    }];
+    
+    [_request setFailedBlock:^{
+        
+        NSError *error = [_request error];
+        NSLog(@"%@", error);
+        
+        [self dataSourceDidError];
+        
+        [self stopLoading];
+        
+    }];
+    
+    [_request start];
+    
+    /*
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         
         NSInteger responseCode = [(NSHTTPURLResponse *)response statusCode];
@@ -430,6 +492,7 @@ userinfo = _userinfo;
         
         [self stopLoading];
     }];
+     */
 }
 
 - (void)dataSourceDidLoad {

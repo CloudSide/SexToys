@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "ListViewController.h"
 #import "PSViewController.h"
-
+#import "ASIDownloadCache.h"
 
 
 @implementation CateViewController
@@ -138,6 +138,10 @@
     }
     
     self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://worldgogo.com/xjb/get_cats.php"]];
+    
+    [_request setDownloadCache:[ASIDownloadCache sharedCache]];
+    [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
+    [_request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"loadCate" forKey:@"action"];
     
