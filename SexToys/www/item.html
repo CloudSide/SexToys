@@ -1,0 +1,577 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; width=device-width; user-scalable=no;" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollstop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+        
+    <script type="text/javascript">
+    
+
+		var lock = false;
+        
+		function startload() {
+
+			if (!lock) {
+			
+				lock = true;
+                run_command('startload', 'do=1');
+			}
+		}
+        
+        function open_url() {
+            
+            run_command('openURL', 'do=1');
+        }
+        
+        function load_view(msg) {
+            
+            var data = msg;
+                        
+            $("#item_title").html(data.title);
+            $("#item_price").html(data.price);
+            //$("#item_review_count").html(data.Reviews.length);
+            //$("#item_fav_count").html(data.Like);
+            $("#item_mall").html("#" + data.nick + "#");
+            $("#item_img_url").attr("src", data.pic_url);
+            //$("#item_time").html(data.ExpireTime);
+            
+            $("#item_content").show();
+        }
+		
+		function load_success(msg) {
+			
+            
+			var data = msg;
+            lock = false;
+            
+            if (typeof(data.detail) == 'string') {
+            
+                $("#item_detail").html("<span style=\"color:rgb(253, 105, 154);\"> 商品详情: </span><br>" + data.detail).show();
+            }
+                        
+            if (typeof(data.comment) == "object" && typeof(data.comment.length) == "number" && data.comment.length > 0) {
+                
+                $("#item_review").html("").show();
+                
+                
+                $(data.comment).each(function(i){
+                                     
+                                            var review_html = " \
+                                                <!--<div class=\"item_review_avatar\"> \
+                                                    <img width=\"50px\" height=\"50px\" src=\"images/1.gif\"/> \
+                                                </div>--> \
+                                                <div> \
+                                                    <!--<div class=\"item_review_userinfo\"> \
+                                                    <span class=\"item_review_username\">匿名用户</span> \
+                                                    <span class=\"item_review_time\"></span> \
+                                                </div>--> \
+                                                <div class=\"item_review_text clearfix\">" + data.comment[i] + "</div> \
+                                                </div> \
+                                                <div class=\"clearfix clear\"></div>";
+                                            
+                                            if (i + 1 == data.comment.length) {
+                                            
+                                                review_html = "<li style=\"border:0;\">" + review_html + "</li>";
+                                     
+                                            } else {
+                                                
+                                                review_html = "<li>" + review_html + "</li>";
+                                            }
+                                                                          
+                                     
+                                            $("#item_review").append(review_html);
+                
+                                        });
+                
+                
+            } else {
+                
+                
+                $("#item_review").hide();
+                
+            }
+            
+            
+            $("#message_area").hide();
+		
+        }
+		
+		function load_fail(msg) {
+			
+			lock = false;
+            
+            $("#message_area").html(msg);
+			$("#message_area").show();
+		}
+		
+		function loading(msg) {
+			
+            $("#message_area").html(msg);
+			$("#message_area").show();
+		}
+        
+        function praise_success() {
+            
+            var fav_count = parseInt($("#item_fav_count").html(), 10);
+            $("#item_fav_count").html(fav_count + 1);
+        }
+        
+        $(document).ready(function() {
+             
+                          
+                          /*
+                          $(".item_img_content").bind("touchstart", function(){
+                                                     
+                                                     
+                                                      $(this).addClass("box_shadow_light");
+                                                     
+                                                     
+                                                     });
+                          
+                          $(".item_img_content").bind("touchend", function(){
+                                                     
+                                                     
+                                                      $(this).removeClass("box_shadow_light");
+                                                     
+                                                     
+                                                     });
+                          
+                          $(".item_img_content").bind("touchcancel", function(){
+                                                     
+                                                     
+                                                      $(this).removeClass("box_shadow_light");
+                                                     
+                                                     
+                                                     });
+                          
+                          $(".item_img_content").bind("touchmove", function(){
+                                                     
+                                                     
+                                                      $(this).removeClass("box_shadow_light");
+                                                     
+                                                     
+                                                     });              
+                          */                
+                                          
+            document.documentElement.style.webkitUserSelect = 'none';  
+            
+            $("#item_content").hide();
+                          
+            startload();
+                
+            /*
+            $("#item_img_area").click(function() {
+                           
+                open_url();
+            });
+             */
+            
+                           
+            $("#item_review_count_btn").click(function() {
+            
+                run_command('reviews', 'do=1');
+                                              
+            });
+             
+                          
+            $("#item_fav_count_btn").click(function() {
+                                                            
+                run_command('praise', 'do=1');                                            
+                                                            
+            });
+                          
+        });
+        
+        
+    </script>
+       
+    <style type="text/css">
+    
+    	body {
+    		
+    		font:16px helvetica,verdana,san-serif;
+    		-webkit-text-size-adjust:none;
+    		overflow-x:hidden;
+    		/*background: rgb(250, 250, 250);*/
+            background: none repeat scroll 0 0 #F7F7F7;
+
+    	}
+    	
+		body,dl,dd,form,p,ul,li,div {
+			
+			margin:0;
+			padding:0;
+		}
+	
+		table {
+			
+			border-collapse:collapse;
+			border-spacing:0;
+		}
+		
+		a { 
+			text-decoration:none;
+			color:#4e5980;
+			cursor:pointer;
+		}
+		
+		a:hover {
+			
+			text-decoration:underline;
+		}
+		
+		li {
+			
+			list-style:none;
+		}
+		
+		fieldset, img {
+			
+			border:0;
+		}
+    
+    	.clearfix:after {
+    		
+    		content:'';
+    		display:block;
+    		height:0;
+    		clear:both;
+    	}
+    	
+		.clearfix {
+			
+			zoom:1;
+		}
+		
+		.item_content {
+			
+			width: 320px;
+			text-align: center;
+		}
+		
+		.item_title {
+		
+			background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+    		color: white;
+    		float: none;
+    		font-size: 16px;
+    		margin: -7px 0 5px;
+   			padding: 19px 5px 9px;
+    		text-align: left;
+		}
+		
+		/*
+		.item_price {
+			
+			width: 310px;
+			margin: 0 0 5px 0;
+			color: rgb(105, 105, 105);
+			float: none;
+			text-align: right;
+			padding: 0 5px;
+		}
+		*/
+		
+		.item_img_area {
+		
+			/*height: 308px;*/
+			/*border: solid 1px rgb(224, 224, 224);*/
+			/*border-radius:4px;*/
+			/*-moz-border-radius:4px;*/
+			/*-webkit-border-radius:4px;*/
+
+			display: table;
+    		float: none;
+    		margin: 0 5px;
+    		width: 308px;
+		}
+		
+		.item_btn_area {
+			
+			width: 310px;
+			margin: 5px 0;
+			float: none;
+			text-align: right;
+			padding: 0 5px;
+
+		}
+		
+		.item_btn_area button {
+			
+			background: rgb(253, 105, 154);
+			color: white;
+			border-radius:6px;
+			-moz-border-radius:6px;
+			-webkit-border-radius:6px;
+			border: 1px solid rgb(254, 226, 236);
+			font-size: 18px;
+			padding: 6px;
+		}
+        
+		.item_img_area img {
+			
+			max-height: 306px;
+			max-width: 306px;
+		}	
+		
+		.item_img_content {
+		
+  			display: table-cell;
+   			padding: 5px 0 0;
+    		text-align: center;
+    		vertical-align: middle;
+ 		}
+ 		
+ 		.item_attr_info {
+		
+			width: 310px;
+			float: none;
+			text-align: right;
+			padding: 0 5px;
+			margin: 15px 0;
+		}
+		
+ 		.item_from {
+ 			
+ 			float: left;
+ 			color: #666666;
+ 		}
+ 		
+ 		.item_time {
+ 			
+ 			float: right;
+ 			color: #666666;
+ 		}
+ 		
+ 		.item_review {
+ 			
+ 			width: 308px;
+			border: solid 1px rgb(224, 224, 224);
+			border-radius:2px;
+			-moz-border-radius:2px;
+			-webkit-border-radius:2px;
+			float: none;
+			margin: 0 5px;
+			background: rgb(244, 244, 244);
+			text-align: left;
+ 		}
+ 		
+ 		.item_review_avatar {
+ 			
+ 			float: left;
+ 		}
+ 		
+ 		.item_review_userinfo {
+ 			
+ 			float: left;
+ 			padding: 3px;
+            margin-left: 5px;
+ 		}
+ 		
+ 		.item_review_time {
+ 			
+ 			font-size: 14px;
+ 		}
+ 		
+ 		.item_review_text {
+ 		
+ 			font-size: 14px;
+ 			/*width: 237px;
+ 			float: right;*/
+ 			padding: 2px;
+            margin-left: 5px;
+ 		}
+ 		
+ 		.item_review li {
+ 			
+ 			padding: 5px;
+ 			min-height: 50px;
+ 			color: rgb(105, 105, 105);
+ 			border-bottom: dashed 1px rgb(200, 200, 200);
+ 		}
+ 		 		
+ 		.item_review_username {
+ 			
+ 			color: rgb(253, 105, 154);
+ 		}
+ 		
+ 		.clear {
+ 			
+ 			clear: both;
+ 			width: 0px;
+ 			height: 0px;
+ 		}
+ 		
+ 		.height_10 {
+            
+            height:10px;
+        }
+        
+        #message_area {
+            
+            width: 312px;
+            margin: 4px;
+    		height: 50px;
+            padding-top: 10px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            text-shadow:rgba(255, 255, 255, 0.496094) 0 1px 0;
+            font-size: 14px;
+        }
+        
+        .item_description > .item_price {
+    	
+			background-color: rgb(253, 105, 154);
+		}
+		
+		.item_description .item_price {
+    
+    		border-radius: 3px 3px 3px 3px;
+    		color: #FFFFFF;
+    		display: block;
+    		font-family: '微软雅黑',tahoma;
+    		height: 16px;
+    		line-height: 16px;
+    		padding: 8px;
+    		position: absolute;
+    		right: 17px;
+    		top: -19px;
+		}
+        
+        #item_detail {
+            
+    		text-align: left;
+            padding: 10px;
+                        
+    		font-size: 100%;
+    		outline: 0 none;
+    		vertical-align: baseline;
+            line-height: 180%;
+
+    	}
+		
+		.item_description {
+		
+        	position: relative;
+        }
+        
+        .item_btn_buy {
+        	
+        	width: 51px;
+        	height: 23px;
+        	background: url(images/btn_buy.png) no-repeat;
+        	background-color: rgba(255, 255, 255, 0);
+        	border: none;
+        	position: relative;
+        	bottom: 5px;
+        }
+        
+        @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+        
+        	.item_btn_buy {
+        	
+        		width: 51px;
+        		height: 23px;
+        		background: url(images/btn_buy@2x.png) no-repeat;
+        		background-color: rgba(255, 255, 255, 0);
+        		border: none;
+        		position: relative;
+        		bottom: 5px;
+        		background-size: 51px 23px;
+        	}
+        }
+        
+					
+    </style>
+    
+</head>
+<body>
+    
+    
+    
+    <div class="item_content clearfix" style="display:none;" id="item_content">
+    	
+    	<div style="min-height:30px;">
+    		<div class="item_img_area" id="item_img_area">
+    			<div class="item_img_content"><img id="item_img_url" src="images/index.png"  /></div>
+    		</div>
+    	</div>
+    	
+    	<div class="item_description">
+    		<div class="item_title"><b><span id="item_mall" style="color:#FD699A;"></span></b>&nbsp;&nbsp;<span id="item_title"></span></div>
+    		<div class="item_price" onclick="open_url();">¥<span id="item_price">0</span>&nbsp;&nbsp;<button class="item_btn_buy"></button></div>
+    	</div>
+    	
+    	<!--
+    	<div class="item_btn_area">
+    		<button id="item_review_count_btn"><span id="item_review_count">0</span> 评论</button>
+    		<button id="item_fav_count_btn"><span id="item_fav_count">0</span> 喜欢</button>
+            <button onclick="open_url();" style="background: rgb(130, 190, 237); border: 1px solid rgb(138, 195, 240);">去看看 >></button>
+    	</div>
+    	
+    	
+    	<div class="item_attr_info clearfix">
+    		<div class="item_from">来自&nbsp;&nbsp;<span id="item_mall"></span></div>
+    		<div class="item_time" id="item_time"></div>
+    	</div>
+    	-->
+    	
+    	<div id="item_review" class="item_review clearfix">
+    	
+    		<ul class="clearfix">
+    			         
+                <!--
+                
+                <li>
+    				<div class="item_review_avatar">
+    					<img width="50px" height="50px" src="images/1.gif"/>
+    				</div>
+    				<div>
+    					<div class="item_review_userinfo">
+    						<span class="item_review_username">如花姑娘</span>
+    						<span class="item_review_time">2011年09月11日 12:21</span>
+    					</div>
+    					<div class="item_review_text clearfix">简单完美的复合体——iphone小白</div>
+    				</div>
+    				<div class="clearfix clear"></div>
+    			</li>
+                
+    			<li style="border:0;">
+    				<div class="item_review_avatar">
+    					<img width="50px" height="50px" src="images/1.gif"/>
+    				</div>
+    				<div>
+    					<div class="item_review_userinfo">
+    						<span class="item_review_username">如花姑娘</span>
+    						<span class="item_review_time">2011年09月11日 12:21</span>
+    					</div>
+    					<div class="item_review_text clearfix">看着很舒服，感觉买了也不舍得用呢。。。。。。看着很舒服，感觉买了也不舍得用呢</div>
+    				</div>
+    				<div class="clearfix clear"></div>
+    			</li>
+    		
+             -->
+             
+    		</ul>
+    	
+    	</div>
+    	
+        
+
+        <div id="item_detail">
+        </div>
+        
+        <div id="message_area" style="display:none;"></div>
+        
+    	<div class="height_10"></div>
+    </div> 
+
+</body>
+</html>       

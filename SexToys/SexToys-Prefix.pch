@@ -1,0 +1,54 @@
+//
+// Prefix header for all source files of the 'SexToys' target in the 'SexToys' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "NSData+Base64.h"
+    #import "NSString+Additions.h"
+    #import "SBJson.h"
+    #import "Static.h"
+    #import "UIViewController+iOS6Autorotation.h"
+    #import "VdiskUtil.h"
+    #import "LdbHandler.h"
+    #import "AppDelegate.h"
+#endif
+
+
+#define kApiItemsURL                        @"http://worldgogo.com/xjb/guide.php"
+#define kApiItemURL                         @"http://worldgogo.com/xjb/get_product_detail.php"
+
+#define kApiLikeURL                         @"http://m.95e.com/95e/dailydeals/like.aspx"
+#define kApiReviewURL                       @"http://worldgogo.com/xjb/feedback.php"
+#define kUploadCheckURL					    @"http://rest.sinaapp.com/sextoys_check_update/"
+
+
+#define kUUID           @"UUID"
+
+
+#define         RGBCOLOR(r,g,b)             [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
+#define         RGBACOLOR(r,g,b,a)          [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+#define         kShareAppDelegate           [AppDelegate sharedAppDelegate]
+
+
+#define kTagVdiskOperationFileActionSheet               10001
+#define kTagVdiskOperationDirActionSheet                10002
+#define kTagVdiskShareAlertView                         10003
+#define kTagVdiskRenameAlertView                        10004
+#define kTagVdiskDeleteActionSheet                      10005
+#define kTagVdiskRenameTextFieldView                    10006
+#define kTagMoreViewLogoutAlertView                     10007
+#define kTagMoreViewClearCacheAlertView                 10008
+#define kTagVdiskDeletesActionSheet                     10009
+#define kTagWeiBoMsgSendAlertView                       10010
+#define KTagWeiboMsgSendAgainAlertView                  10011
+#define KTagMoreViewFollowAlertView                     10012
+#define kTagAddressBookSaveAlertView                    10013
+#define kTagAddressBookRestoreAlertView                 10014

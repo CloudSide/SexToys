@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; width=device-width; user-scalable=no;" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollstop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+    
+    <script type="text/javascript">
+		
+		var page = 1;
+		var lock = false;
+		var lastItemOffsetDefault = 2400;
+		var is_reload = false;
+		var message = [];
+		               
+        function lazyload() {
+			
+            //$("img:[src='images/transparent.gif']").lazyload({effect:"fadeIn", event:"scrollstop", failurelimit:999, threshold:20});
+            $("img:[src='images/transparent.gif']").lazyload({event:"scrollstop", failurelimit:999, threshold:20});
+        }
+        
+		function selected(gid) {
+		
+			run_command('selected', 'id=' + encodeURIComponent(gid));
+		}
+		
+		function loadmore() {
+		
+			if (!lock) {
+			
+				lock = true;
+				
+                //run_command('loadmore', 'page=' + encodeURIComponent(p));
+                run_command('loadmore', 'do=1');
+			}
+		}
+		
+		function reload_success(msg) {
+		
+			is_reload = true;
+			message = msg;
+			setTimeout("_loadmore_success()", 0);
+		}
+		
+		function loadmore_success(msg) {
+		
+			is_reload = false;
+			message = msg;
+			setTimeout("_loadmore_success()", 0);
+		}
+		
+		
+        function _loadmore_success() {
+                
+            //var data = eval("(" + msg + ")");
+                        
+            var data = message;
+            
+            var html1 = ""; 
+            var html2 = "";
+            
+            for (i=0; i<data.length; i++) {
+                    
+                
+                var html = "<li onclick=\"selected('" + data[i].ID + "');\">" + 
+                           "    <div class=\"lazy_img\"><img class=\"noBorder\" data-original=\"" + data[i].Pic + "\" src=\"images/transparent.gif\" width=\"142px\" /></div>" +  
+                           "    <div class=\"score clearfix\">" +  
+                           "        <div class=\"ico_sidebar like\"><span class=\"pink\">" + data[i].Like + "</span>&nbsp;喜欢</div>" +  
+                           "        <div class=\"ico_sidebar comment\"><span class=\"pink\">" + data[i].Review + "</span>&nbsp;评论</div>" +  
+                           "    </div>" +  
+                           "    <div class=\"title\">" + data[i].Title + "</div>  " +  
+                           "</li>";
+                
+                if (i%2 == 0)
+                    html1 += html;
+                else
+                    html2 += html;                    
+            }
+            
+            if (is_reload) {
+            	
+            	$("#items_l").html(html1);
+            	$("#items_r").html(html2);
+            		
+            } else {
+            	
+            	$("#items_l").append(html1);
+            	$("#items_r").append(html2);
+            }
+                                       						
+            lazyload();
+            
+            if (is_reload) {
+            	
+            	goTop();
+            }
+            		            
+            $("#more_loading").text(" ");
+            
+            lock = false;
+                                    
+        }
+        
+        
+        function loadmore_fail(msg) {
+            
+            lock = false;
+            $("#more_loading").text(msg);
+        }
+        
+        function loadmore_loading(msg) {
+            
+            $("#more_loading").text(msg);
+        }
+        
+		
+		$(document).ready(function() {
+		                              
+            document.documentElement.style.webkitUserSelect = 'none';              
+            
+			loadmore();
+						
+			$(window).scroll(function() {
+														
+				var offset = $("li:last").offset().top - $(document).scrollTop();
+												  
+                if (offset < lastItemOffsetDefault) {
+		   	
+		   			loadmore();
+				}
+								
+			});
+			
+		});
+	
+	</script>
+
+    
+    <style type="text/css">
+    
+    
+    	body {
+    		
+    		font:14px helvetica,verdana,san-serif;
+    		-webkit-text-size-adjust:none;
+    		overflow-x:hidden;
+    		background: rgb(240, 240, 240);
+    	}
+    	
+		body,dl,dd,form,p,ul,li,div {
+			
+			margin:0;
+			padding:0;
+		}
+	
+		table {
+			
+			border-collapse:collapse;
+			border-spacing:0;
+		}
+		
+		a { 
+			text-decoration:none;
+			color:#4e5980;
+			cursor:pointer;
+		}
+		
+		a:hover {
+			
+			text-decoration:underline;
+		}
+		
+		li {
+			
+			list-style:none;
+		}
+		
+		fieldset, img {
+			
+			border:0;
+		}
+    
+    	.clearfix:after {
+    		
+    		content:'';
+    		display:block;
+    		height:0;
+    		clear:both;
+    	}
+    	
+		.clearfix {
+			
+			zoom:1;
+		}
+    
+    	.main_content {
+    	
+    		width: auto;
+    		height: auto;
+            /* padding-top: 6px; */
+    		/* border: solid 1px red; */
+    	}
+    	
+    	.main_content ul {
+    	
+    		width: 160px;
+    		height: auto;
+    		/*border: solid 1px blue;*/
+    		float: left;
+    	}
+    	
+    	.main_content li {
+    	
+    		float: left;
+    		width: 152px;
+    		padding: 5px 0;
+    		text-align: center;
+    		background: white;
+    		border: solid 1px rgb(220, 220, 220);
+    		
+    		/*
+    		border-radius:4px;
+			-moz-border-radius:4px;
+			-webkit-border-radius:4px;
+			*/
+
+    	}
+    	
+    	#items_l li {
+    	
+    		margin: 4px 0 0 4px;
+    	}
+    	
+    	#items_r li {
+    	
+    		margin: 4px 2px 0 2px;
+    	}
+    	
+    	.main_content li .title {
+    	
+    		text-align: left;
+    		padding: 0 5px;
+    		width:142px;
+    		overflow: hidden;
+    	}
+    	
+    	.main_content li .score {
+    	
+    		text-align: center;
+    		padding: 5px 2px;
+    		
+    	}
+    	
+    	.main_content li .score .ico_sidebar {
+    	
+    		background: url(images/ico_sidebar.png) no-repeat;
+    	}
+    	
+    	.main_content li .score .comment {
+    	
+    		background-position:0 -474px;
+  			float:left;
+  			height:16px;
+  			overflow-x:hidden;
+			overflow-y:hidden;
+  			padding-left:17px;
+  			text-align:left;
+  			width:52px;
+    		
+    	}
+    	
+    	.main_content li .score .like {
+    	
+  			background-position:0 -100px;
+  			float:left;
+  			height:16px;
+  			margin-left:6px;
+  			overflow-x:hidden;
+ 			overflow-y:hidden;
+  			padding-left:17px;
+  			text-align:left;
+  			width:52px;
+ 
+    	}
+ 
+ 		.main_content li .score .pink {
+    	
+    		color: rgb(253, 105, 154);
+    	}
+    	
+    	.main_content li .lazy_img {
+    		
+    		min-height: 142px;
+    		min-width: 142px;
+    		/* background: url(images/index.png) no-repeat; */
+    	}
+        
+        .height_5 {
+            
+            height:5px;
+        }
+        
+        #more_loading {
+            
+            width: 312px;
+            margin: 4px;
+    		height: 50px;
+            padding-top: 10px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            text-shadow:rgba(255, 255, 255, 0.496094) 0 1px 0;
+            font-size: 16px;
+        }
+        
+
+    
+    </style>
+    
+</head>
+<body>
+    
+
+    <div class="main_content clearfix">
+    	<ul id="items_l"></ul>  	
+    	<ul id="items_r"></ul>
+    </div> 
+    
+    <div class="clearfix height_5"></div>
+    
+    <div id="more_loading">正在加载...</div>
+    
+</body>
+</html>       

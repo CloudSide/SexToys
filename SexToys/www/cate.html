@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; width=device-width; user-scalable=no;" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollstop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+    
+    <script type="text/javascript">
+		        
+		var cate_data;
+        
+        function resetAHover() {
+            
+            $('a').css("color", "#21759B");
+        }
+		
+		function selected(cate_id, name) {
+            
+            $('a').each(
+                function(index) {
+                    var tmp = $(this).text();
+                    if (tmp == name ) {
+                            
+                        $(this).css("color", "#02A3FB");
+                    } else {
+                        
+                        $(this).css("color", "#21759B");
+                    }
+                });
+			run_command('selected', 'cate_id=' + encodeURIComponent(cate_id) + '&name=' + encodeURIComponent(name));
+		}
+        
+        function recommend(name) {
+            $('a').each(
+                function(index) {
+                    var tmp = $(this).text();
+                    if (tmp == name ) {
+                        
+                        $(this).css("color", "#02A3FB");
+                    } else {
+                        
+                        $(this).css("color", "#21759B");
+                    }
+                });
+            run_command('recommend', 'name=猜你喜欢');
+        }
+		
+		function loadCate() {
+		
+			run_command('loadCate', 'do=1');
+		}
+		
+		function load_fail(msg) {
+			
+			$("#more_loading").text(msg);
+		}
+		
+		function _load_success() {
+			
+			$("#items").html("");
+			
+            /*
+			var html =              "\n" +
+									"<li>" +
+									"<a href=\"javascript:recommend('猜你喜欢');\">" +
+                   					"<img width=\"56px\" src=\"images/cate_guess_you_like.png\" /><br>" +
+                    				"<span>猜你喜欢</span>" +
+                					"</a>" +  
+									"</li>" + 
+                                    "\n" +
+                                    "<li>" +
+                                    "<a href=\"javascript:selected('13', '小说');\">" +
+                                    "<img width=\"56px\" src=\"images/cate_13.png\" /><br>" +
+                                    "<span>小说</span>" +
+                                    "</a>" +  
+                                    "</li>";
+             */
+            
+            var html = "";
+			
+			 for (i=0; i<cate_data.length; i++) {
+				   
+				//alert(cate_data[i]["id"]);   
+                html += 			"\n" +
+									"<li>" +
+									"<a href=\"javascript:selected('" + cate_data[i]["id"]  + "', '" + cate_data[i]["cats_name"]  + "');\">" +
+                   					"<img width=\"56px\" height=\"56px\" src=\"" + cate_data[i]["img"] + "\" /><br>" +
+                    				"<span>" + cate_data[i]["cats_name"] + "</span>" +
+                					"</a>" +  
+									"</li>"; 
+            }
+			
+			$("#items").html(html);
+			$('a').css("color", "#21759B");
+
+		}
+		
+		function load_success(data) {
+	
+			cate_data = data;	
+			$("#more_loading").text(" ");
+			setTimeout("_load_success()", 0);
+		}
+		
+		$(document).ready(function() {
+		                              
+            document.documentElement.style.webkitUserSelect = 'none';
+                          
+            //load_success([{"cats_name":"计生用品","id":1,"keywords":"计生用品","img":"http://www.worldgogo.com/xjb/imgs/jsyp.png","url":"http://www.worldgogo.com/xjb/cats.php?pgno=1&t=1"},{"cats_name":"男用器具","id":2,"keywords":"男用器具","img":"http://www.worldgogo.com/xjb/imgs/nyqj.png","url":"http://worldgogo.com/xjb/cats.php?pgno=1&t=2"},{"cats_name":"女用器具","id":3,"keywords":"女用器具","img":"http://www.worldgogo.com/xjb/imgs/nyqj2.png","url":"http://worldgogo.com/xjb/cats.php?pgno=1&t=3"},{"cats_name":"情趣内衣","id":4,"keywords":"情趣内衣","img":"http://www.worldgogo.com/xjb/imgs/qqny.png","url":"http://worldgogo.com/xjb/cats.php?pgno=1&t=4"},{"cats_name":"情趣用品","id":5,"keywords":"情趣用品","img":"http://www.worldgogo.com/xjb/imgs/qqyp.png","url":"http://worldgogo.com/xjb/cats.php?pgno=1&t=5"},{"cats_name":"性保健品","id":6,"keywords":"性保健品","img":"http://www.worldgogo.com/xjb/imgs/xbjp.png","url":"http://worldgogo.com/xjb/cats.php?pgno=1&t=6"}]);
+                           
+                          
+            loadCate();
+		});
+	
+	</script>
+
+    
+    <style type="text/css">
+    
+    
+    	body {
+    		
+    		font:14px helvetica,verdana,san-serif;
+    		-webkit-text-size-adjust:none;
+    		overflow-x:hidden;
+    		background: rgb(240, 240, 240);
+    	}
+    	
+		body,dl,dd,form,p,ul,li,div {
+			
+			margin:0;
+			padding:0;
+		}
+	
+		table {
+			
+			border-collapse:collapse;
+			border-spacing:0;
+		}
+		
+		a { 
+			text-decoration:none;
+			color:#4e5980;
+			cursor:pointer;
+		}
+		
+		a:hover {
+			
+			text-decoration:none;
+		}
+		
+		li {
+			
+			list-style:none;
+		}
+		
+		fieldset, img {
+			
+			border: 0;
+		}
+		
+		body {
+    
+    		background-color: #F2F2F2;
+    		background-image: url("images/home_main_bg.png");
+    		color: #2A2A2A;
+		}
+		
+		.white_background {
+			
+			background: white;
+		}
+    
+    	.clearfix:after {
+    		
+    		content:'';
+    		display:block;
+    		height:0;
+    		clear:both;
+    	}
+    	
+		.clearfix {
+			
+			zoom:1;
+		}
+    
+    	.main_content {
+    	
+    		width: auto;
+    		height: auto;
+            /* padding-top: 6px; */
+    		/* border: solid 1px red; */
+    	}
+    	
+    	.main_content ul {
+    	
+    		width: 320px;
+    		height: auto;
+    		/*border: solid 1px blue;*/
+    		float: left;
+            margin-top: 20px;
+    	}
+    	
+    	.main_content li {
+    	
+    		float: left;
+    		/*width: 152px;*/
+    		width: 106px;
+    		/*padding: 5px 0;*/
+    		text-align: center;
+    		/*background: white;*/
+    		/*border: solid 1px rgb(220, 220, 220);*/
+    		padding: 12px 0;
+    		/*
+    		border-radius:4px;
+			-moz-border-radius:4px;
+			-webkit-border-radius:4px;
+			*/
+
+    	}
+		
+		#more_loading {
+            
+            width: 312px;
+            margin: 4px;
+    		height: 50px;
+            padding-top: 10px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            text-shadow:rgba(255, 255, 255, 0.496094) 0 1px 0;
+            font-size: 16px;
+        }
+    
+    </style>
+
+   
+    
+</head>
+<body>
+    <a href="#" id="empty_a" style="display:none"></a>
+    <div class="main_content clearfix">
+    	<ul id="items">
+        
+            
+        </ul>  	
+    </div> 
+    
+    <div class="clearfix height_5"></div>
+    
+    <div id="more_loading">正在加载...</div>
+    
+</body>
+</html>       

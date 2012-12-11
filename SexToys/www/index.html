@@ -1,0 +1,589 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; width=device-width; user-scalable=no;" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollstop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+    
+    <script type="text/javascript">
+		
+		var page = 1;
+		var lock = false;
+		var lastItemOffsetDefault = 1400;
+		var is_reload = false;
+		var message = [];
+		var itemsCount = 0;
+		               
+        function lazyload() {
+			
+            //$("img:[src='images/transparent.gif']").lazyload({effect:"fadeIn", event:"scrollstop", failurelimit:999, threshold:20});
+            $("img:[src='images/transparent.gif']").lazyload({event:"scrollstop", failurelimit:999, threshold:1400});
+            //$("img:[src='images/transparent.gif']").lazyload({failurelimit:999, threshold:1400});
+
+        }
+        
+		function selected(gid) {
+		
+			run_command('selected', 'id=' + encodeURIComponent(gid));
+		}
+		
+		function loadmore() {
+		
+			if (!lock) {
+			
+				lock = true;
+				
+                $("#more_button").hide();
+                loadmore_loading('正在加载...');
+                //run_command('loadmore', 'page=' + encodeURIComponent(p));
+                run_command('loadmore', 'do=1');
+			}
+		}
+		
+		function reload_success(msg) {
+			
+			is_reload = true;
+			itemsCount = 0;
+			message = msg;
+			setTimeout("_loadmore_success()", 0);
+            $("#more_button").show();
+            
+		}
+        
+        function reload_fav_success(msg) {
+        
+            if (msg.length == 0) {
+            
+                loadmore_loading('您还没有收藏过商品');
+                return;
+            }
+            
+            reload_success(msg);
+            $("#more_button").hide();
+        }
+		
+		function loadmore_success(msg) {
+		
+			is_reload = false;
+			message = msg;
+			setTimeout("_loadmore_success()", 0);
+            $("#more_button").show();
+		}
+		
+		
+        function _loadmore_success() {
+            
+            
+            
+            //$("#more_button").show();
+            
+            //var data = eval("(" + msg + ")");
+                        
+            var data = message;
+            
+            var html1 = ""; 
+            var html2 = "";
+            
+            for (i=0; i<data.length; i++) {
+                
+/*
+                var html = "\n" +
+"<li onclick=\"selected('" + itemsCount + "');\">" +
+"	<div class=\"hd\"></div>" +
+"	<div class=\"white_background\">" +
+"		<div class=\"lazy_img\">" +
+"			<img width=\"144px\" data-original=\"" + data[i].pic_url + "\" src=\"images/transparent.gif\" class=\"noBorder\" style=\"display: inline;\">" +
+"			<span class=\"p\">¥" + data[i].price + "</span>" +
+"		</div>" +
+"		<div class=\"score clearfix\"></div>" +
+"		<div class=\"favorite\">" +
+"	   		<span class=\"favaImg\">喜欢</span>" +
+"    		<div class=\"favDiv\">" +
+"    			<span class=\"favCount\">" + data[i].seller_credit_score + "</span>" +
+"    			<i></i>" +
+"    		</div>" +
+"    		<span class=\"creply_n\">(" + data[i].seller_credit_score + ")</span>" +
+"    		<span class=\"creply\">评论</span>" +
+"		</div>" +
+"		<div class=\"clearfix height_5\"></div>" +
+"	</div>" +
+"	<div class=\"title\">" + data[i].title + "</div>" + 
+"	<div class=\"ws_ft\"></div>" +
+"</li>";
+ */
+                
+var html = "\n" +
+                "<li onclick=\"selected('" + itemsCount + "');\">" +
+                "	<div class=\"hd\"></div>" +
+                "	<div class=\"white_background\">" +
+                "		<div class=\"lazy_img\">" +
+                "			<img width=\"144px\" data-original=\"" + data[i].pic_url + "\" src=\"images/transparent.gif\" class=\"noBorder\" style=\"display: inline;\">" +
+                "			<!--<span class=\"p\">¥" + data[i].price + "</span>-->" +
+                "		</div>" +
+                "		<div class=\"score clearfix\"></div>" +
+                "		<div class=\"clearfix height_5\"></div>" +
+                "	</div>" +
+                "	<div class=\"title\">" +
+                "		<div class=\"favorite favorite2\">" +
+                "	   		<!--<span class=\"favaImg\">喜欢</span>-->" +
+                "    		<div class=\"favDiv\">" +
+                "    			<span class=\"favCount\">¥" + data[i].price + "</span>" +
+                "    			<i></i>" +
+                "    		</div>" +
+                "    		<span class=\"creply_n\">(" + data[i].volume + ")</span>" +
+                "    		<span class=\"creply\">销量</span>" +
+                "		</div>" +
+                "   </div>" +
+                "	<div class=\"ws_ft\"></div>" +
+                "</li>";
+				
+				itemsCount++;
+                
+                if (i%2 == 0)
+                    html1 += html;
+                else
+                    html2 += html;                    
+            }
+            
+            if (is_reload) {
+            	 
+            	$("#items_l").html(html1);
+            	$("#items_r").html(html2);
+            	//goTop(0.1, 0);
+            		
+            } else {
+            	
+            	$("#items_l").append(html1);
+            	$("#items_r").append(html2);
+            }
+                                       						
+            lazyload();
+            
+            
+            $("#more_loading").text(" ");
+            
+            lock = false;
+                                    
+        }
+        
+        
+        function loadmore_fail(msg) {
+            
+            lock = false;
+            $("#more_loading").text(msg);
+        }
+        
+        function loadmore_loading(msg) {
+            
+            $("#more_loading").text(msg);
+        }
+        
+		
+		$(document).ready(function() {
+		                              
+            document.documentElement.style.webkitUserSelect = 'none';              
+            
+			loadmore();
+					
+                          /*
+			$(window).scroll(function() {
+														
+				var offset = $("li:last").offset().top - $(document).scrollTop();
+												  
+                if (offset < lastItemOffsetDefault) {
+		   	
+		   			loadmore();
+				}
+								
+			});
+                           */
+                          /*
+                          $(window).scroll(function(){
+                                           var clientHeight = $(window).height(),
+                                           scrollTop = $(window).scrollTop(),
+                                           scrollHeight = $(document).height();
+                                           console.log(clientHeight+":"+scrollTop+":"+scrollHeight)
+                                           if(clientHeight + scrollTop + 1 >= scrollHeight ){
+                                           loadmore();
+                                           }
+                        });
+                          
+*/
+                          
+                          //reload_success([{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQdMXOQYrfvo%3D&spm=2014.21295619.1.0","commission":"0.20","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15039073781,"pic_url":"http:\/\/img03.taobaocdn.com\/bao\/uploaded\/i3\/T1LdYuXgJbXXc4ip_X_113845.jpg","price":"3.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u66fc\u59ff\u4e1d\u889c \u5973\u4e1d\u889c\u6c34\u6676\u77ed\u4e1d\u889c \u9690\u5f62\u77ed\u889c\u900f\u6c14\u889c\u5b50 \u5973 \u77ed\u4e1d\u889c\u8089\u8272\u4e1d\u889c","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQdJB1Xp7Tuk%3D&spm=2014.21295619.1.0","commission":"0.50","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15038813369,"pic_url":"http:\/\/img02.taobaocdn.com\/bao\/uploaded\/i2\/T1YseTXgByXXbcQAI3_050655.jpg","price":"9.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u79d2\u6740 \u60c5\u8da3\u4e1d\u88e4\u889c \u5973 \u9ed1\u8272\u5927\u817f\u4e1d\u889c \u60c5\u8da3\u957f\u889c \u7f51\u889c \u957f\u7b52\u889c \u4e1d\u88e4 \u5973","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQd%2FCOTvqIJ4%3D&spm=2014.21295619.1.0","commission":"0.80","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15035546111,"pic_url":"http:\/\/img03.taobaocdn.com\/bao\/uploaded\/i3\/T1wxvhXmRbXXaYcAcW_024259.jpg","price":"15.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u60c5\u8da3\u5185\u8863\u6027\u611f \u5973 \u6302\u8116\u5f0f\u7761\u8863 \u60c5\u8da3\u7761\u8863 \u5973 \u5957\u88c5\u8bf1\u60d1 \u5f00\u88c6\u5957\u88c5 \u5973","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQd%2FB8bTdAv4%3D&spm=2014.21295619.1.0","commission":"0.95","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15035610269,"pic_url":"http:\/\/img03.taobaocdn.com\/bao\/uploaded\/i3\/T1C.VLXmRyXXccPhE8_100653.jpg","price":"18.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u60c5\u8da3\u5185\u8863 \u5973 \u857e\u4e1d\u900f\u660e\u6027\u611f \u540a\u5e26\u7761\u88d9  \u542b\u5f00\u6863\u5185\u88e4 \u8bf1\u60d1\u5f00 \u5957\u88c5 \u5973","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQdMUG%2Beggto%3D&spm=2014.21295619.1.0","commission":"1.00","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15039397160,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1nDX0XkVrXXcHIK_b_123655.jpg","price":"19.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u60c5\u8da3\u5185\u8863\u5957\u88c5 \u5973\u6027\u611f\u857e\u4e1d\u900f\u660e\u65d7\u888d\u7761\u8863\u5973\u60c5\u8da3\u7761\u8863\u5236\u670d\u8bf1\u60d1 \u5f00\u5927\u7801","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiCp0VhUkfIYhgl86GvE%2FfWdPXIxbnRaR1B9ncIyVtsr%2F76CybQtoYdN%2Fu4V4nx2iHxWXJp7X2uWXVBMs5nSriqX8XUfiuCJpRYsgdo%3D&spm=2014.21295619.1.0","commission":"1.80","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u6d59\u6c5f \u6e29\u5dde","nick":"liaoyun12366","num_iid":14251461306,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1Kk14XlNlXXcjTPo6_062316.jpg","price":"36.00","seller_credit_score":6,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8AbxDUjiph3tTe0QzCyl%2B10pGoRCagEaNPj1VBjLuhOGo14RAd%2FkcVrIrvf7uI6DcHV4NwxgAXbquYgbxJ4&spm=2014.21295619.1.0","title":"\u6c34\u6676\u4eff\u771f\u9633\u5177 \u73bb\u7483\u51b0\u706b\u68d2\u5973\u7528\u9ad8\u6f6e\u81ea\u6170\u5668\u5177G\u70b9\u540e\u5ead\u809b\u585e\u52a0\u6e29\u81ea\u6170\u68d2","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQdJB0qkY9yE%3D&spm=2014.21295619.1.0","commission":"1.95","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15038865286,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/T1wlNTXaNIXXXV2hA0_035448.jpg","price":"38.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u6b63\u54c1\u7279\u4ef7 \u60c5\u8da3\u7528\u54c1 \u7537\u9634\u6839 \u5973\u7528\u81ea\u6170\u5668\u5177 \u5e2e\u60a8\u627e\u56de\u611f\u89c9 \u7f57\u9a6c\u5927\u5e1d","volume":1},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywii6y0Ib51EU6MV5lBuuHOjRc%2FkAATAAuEPr2Ab8e6f%2B3eGVPwQIhskwDk7r3YslTuuQTGpJjuOtqmUpLX7UBy3gSvPz1VJmSwBPeBIs%3D&spm=2014.21295619.1.0","commission":"6.20","commission_num":"0","commission_rate":"1000.00","commission_volume":"0","item_location":"\u4e0a\u6d77","nick":"\u6b22\u7231\u57ce\u6210\u4eba\u7528\u54c1","num_iid":15829440756,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/T1camOXaVsXXXyVyza_121456.jpg","price":"62.00","seller_credit_score":9,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq86TPwkP4MD0XXtblDuRzbMcfGvy8YtTgX1sfm4kYnV%2BkjJZGzEECrLJDtxxINbRatCO76FpRZ5Oqtt6z6UN&spm=2014.21295619.1.0","title":"\u65b0\u6b3e \u8fdb\u53e3\u7f8e\u56fdselebritee \u857e\u4e1d\u82b1\u6735\u5f00\u6863\u8fde\u8eab\u889c\u5b50 \u60c5\u8da3\u4e1d\u889c\u8bf1\u60d1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiwzrilEZdng0%2ByZlbVF2JlNiy7NNgY5b2NzKmcFdSbLietVmXJ9YQCfaGsqCn0AUJ5jSoiL%2BiIEL2LaL91obBsppeYnClMSld7LD3g%3D&spm=2014.21295619.1.0","commission":"2.20","commission_num":"0","commission_rate":"1000.00","commission_volume":"0","item_location":"\u4e0a\u6d77","nick":"\u963f\u6bd4\u4e3d","num_iid":12208667132,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/441676877\/T2EwJMXdRcXXXXXXXX_!!441676877.jpg","price":"22.00","seller_credit_score":9,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8yZM0v3E5eiBl7KYKUzGbRQKNKd8VpkfTL4hAJ56mz0OhzjQiedr4z5Es0y47dac6iooFg7N9K1iseMBvGc&spm=2014.21295619.1.0","title":"\u5973\u7528\u81ea\u6170\u5668\u5177 \u6210\u4eba\u7528\u54c1\u7537\u6839\u5012\u6a21\u4eff\u771f\u9633\u5177 \u6405\u52a8\/\u626d\u8f6c\u81ea\u6170\u5668360\u5ea6","volume":1},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiovH%2FBmvdnoQgPb327CDkFiKlFOng2CqaHcgD%2BlniL2suDAbTaBSX7mpXIcQ%2FY%2FaIf7gpTf%2FQ8twPHmJ0yMQIVFWnpvIjw3GOdlEQ%3D%3D&spm=2014.21295619.1.0","commission":"7.50","commission_num":"0","commission_rate":"2500.00","commission_volume":"0","item_location":"\u5e7f\u4e1c \u6df1\u5733","nick":"zshuili2009","num_iid":9948022580,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1Q20KXXdjXXcp3fs._112206.jpg","price":"30.00","seller_credit_score":6,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8q8tjXCeNo98r%2Bs7qRvn1LJVTJWTW%2FmY0YrjjMpIlJ6j8aqcynjh1izGQUmjxL1zguIClMiQLUwfzUl6zBW&spm=2014.21295619.1.0","title":"\u767e\u4e50\u6b63\u54c1 \u4ed9\u9ec4\u74dc \u5438\u9644\u578b \u6b63\u5e38\u9634\u830e\u5927\u5c0f \u5973\u6027\u6309\u6469\u81ea\u6170\u50ac\u6f6e\u5723\u5668\u7528\u54c1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiisdyFhfIqozifyVNFNZMj2qcyaBQLqQHw%2BZB%2BigxfAJ6y6HZrODQG4Zffha89DpmQa6Bz3vbeWj0WYBLdl%2BUInyicvZ9A0WpqF%2Fog%3D%3D&spm=2014.21295619.1.0","commission":"1.28","commission_num":"0","commission_rate":"150.00","commission_volume":"0","item_location":"\u4e0a\u6d77","nick":"\u5341\u516b\u5728\u7ebf","num_iid":20653296734,"pic_url":"http:\/\/img03.taobaocdn.com\/bao\/uploaded\/i3\/T1PdOHXmxkXXaIzsDX_084458.jpg","price":"85.00","seller_credit_score":12,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8s2YU3XkciRtFrRxwEvHLj82oJ3tknN%2FV%2BdKtSV7gIc8xiD%2Bvve5gp5eC9Yerppmg6qEazWNpM%2FSx1nWh0%3D&spm=2014.21295619.1.0","title":"\u9999\u6e2f4U\u81fb\u91d1\u94f6\u5f69\u7cfb\u5217\u4e4b\u7231\u5929\u4f7f\u7a76\u6781\u5962\u5ba0\u8896\u73cd\u578bAV\u68d2 \u7537\u5973\u60c5\u8da3\u73a9\u5177|","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywii6%2FCWWMkASiu7AwYxH1Hvr8OdqQJtB6jPJbXWVH%2BqcNiiaziLbu0FwZYGjIKBSKYlu2bS6xCUallfubYewg11xVEHU5gFy9hKp4IxA%3D&spm=2014.21295619.1.0","commission":"0.02","commission_num":"0","commission_rate":"200.00","commission_volume":"0","item_location":"\u5c71\u4e1c \u4e34\u6c82","nick":"\u654f\u513f\u4fe1\u8a89\u5e97","num_iid":17466504861,"pic_url":"http:\/\/img02.taobaocdn.com\/bao\/uploaded\/i2\/T1.ePhXgldXXb_5IU1_040510.jpg","price":"1.05","seller_credit_score":10,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq86eQnS%2Bn5hu%2BU8qnFpbr5awIcNqWqBo42Sz4k1FuST71ZwFeiRERNbbnY8r3kJQIYBSgcIxPVWGtflBK12m&spm=2014.21295619.1.0","title":"30\u7247\u5305\u90ae \u6b63\u54c1\u500d\u529b\u4e50\u5c0f\u53f7\u7537\u5973\u7528\u5b89\u5168\u5957G\u70b9\u907f\u5b55\u5957\u7ec4\u5408\u5957\u88c5\u8d85\u8584\u5ef6\u65f6","volume":65},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiovH%2FBmvdnoQgPb327CDkFiKlFOng2CqaHcgD%2BlniL2suDAbTaBSX7mpXIcQ%2FY%2FaIf7gpTf%2FQ8twPHmJ0yMQIVFWnvT7V9bLtPobA%3D%3D&spm=2014.21295619.1.0","commission":"2.48","commission_num":"0","commission_rate":"2500.00","commission_volume":"0","item_location":"\u5e7f\u4e1c \u6df1\u5733","nick":"zshuili2009","num_iid":9853940820,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/T1rKxKXaRrXXbdJ773_051020.jpg","price":"9.90","seller_credit_score":6,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8q8tjXCeNo98r%2Bs7qRvn1LJVTJWTW%2FmY0YrjjMpIlJ6j8aqcynjh1izGQUmjxL1zguIClMiQLUwfzUl6zBW&spm=2014.21295619.1.0","title":"\u500d\u529b\u4e50\u6781\u4e50\/\u6210\u4eba\u7528\u54c1\/\u5b89\u5168\u5957\/\u907f\u5b55\u5957\/\u6027\u7528\u54c1\/\u8ba1\u751f\u7528\u54c1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiovH%2FBmvdnoQgPb327CDkFiKlFOng2CqaHcgD%2BlniL2suDAbTaBSX7mpXIcQ%2FY%2FaIf7gpTf%2FQ8twPHmJ0yMQIVFUl8j0hio1GUZfJs%3D&spm=2014.21295619.1.0","commission":"4.00","commission_num":"0","commission_rate":"2500.00","commission_volume":"0","item_location":"\u5e7f\u4e1c \u6df1\u5733","nick":"zshuili2009","num_iid":14317966786,"pic_url":"http:\/\/img02.taobaocdn.com\/bao\/uploaded\/i2\/T1bwK6XjXiXXXQ_cTa_120439.jpg","price":"16.00","seller_credit_score":6,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8q8tjXCeNo98r%2Bs7qRvn1LJVTJWTW%2FmY0YrjjMpIlJ6j8aqcynjh1izGQUmjxL1zguIClMiQLUwfzUl6zBW&spm=2014.21295619.1.0","title":"\u65b0\u54c1\u70ed\u9500 \u9ad8\u7ea7\u8c03\u60c5\u7fbd\u6bdb \u6311\u8d77\u6b32\u671b \u524d\u620f\u5fc5\u5907\u6027\u7528\u54c1 \u53e6\u7c7b \u6210\u4eba\u7528\u54c1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiilrWTD7NvZ1Az8Aqba4YiU6bBsnPR%2FcqlAa%2FGN0lvSFPiNThnOIr3%2F7Y4e4NHw6h0ZSh0EN216NRV7rijb87gxYNYlo2bymj39dOQ%3D%3D&spm=2014.21295619.1.0","commission":"4.90","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u5e7f\u4e1c \u6df1\u5733","nick":"tanqun_2008","num_iid":4981094479,"pic_url":"http:\/\/img05.taobaocdn.com\/bao\/uploaded\/i5\/T1Et0xXX8gXXaF2mA9_104528.jpg","price":"98.00","seller_credit_score":10,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8kvn%2FsJWJob7EkzjLi5NLXBk30xl7FsqSNpwwVopkiQ5iqSaBGxK08Koy1Wy20bNJaf%2FXGF91N0Ymz7VdZ5&spm=2014.21295619.1.0","title":"\u60c5\u8da3\u5185\u8863\/\u675f\u8eab\u8863\/\u7d27\u8eab\u8863\/\u9a6c\u5939\/\u9ad8\u8d35\u590d\u53e4\u80f8\u8863\/\u94a2\u6392\u6263\u9c7c\u9aa8","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBo592eLiRuIl0c%3D&spm=2014.21295619.1.0","commission":"0.10","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":14973802257,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1tnDXXfVjXXabZP.__080147.jpg","price":"2.00","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u9c8d\u52c3\u5f02\u578b\u5957 \u5927\u82b1\u5957 \u5973\u5b89\u5168\u5957 \u7537\u907f\u5b55\u5957 \u60c5\u8da3g\u70b9\u5957 \u5f02\u578b\u5957\u907f\u5b55\u5957","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiilsAvQM6bcK3pzFBGqRu%2FvplUgTzrM9W2LOuR0ck7LHgTIaKx4IJe6l0tV9FvRb5m7hLJubSJUPIuidNz0vmwe4S79L%2FS9R3QagCw%3D%3D&spm=2014.21295619.1.0","commission":"0.15","commission_num":"0","commission_rate":"300.00","commission_volume":"0","item_location":"\u4e0a\u6d77","nick":"\u738b\u9648\u6c38\u7ea2","num_iid":9252492746,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/T1yZd0XkBGXXbh.q3U_013635.jpg","price":"5.00","seller_credit_score":11,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8kofqf7%2B7IHOY2iSBJ9tktl63zVzkRTiTwVQUPFo1O54qdeGgri5UjxPOUz5du7rq247UmrukkTtnZL46Zs&spm=2014.21295619.1.0","title":"\u98ce\u6b4c\u5546\u884c \u8d85\u8584\u5929\u9e45\u7ed2 \u957f\u7b52\u4e1d\u889c 50001\u6279\u53d1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBuYQ5aJ%2FJ3Osso%3D&spm=2014.21295619.1.0","commission":"0.65","commission_num":"0","commission_rate":"500.00","commission_volume":"0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":15017373418,"pic_url":"http:\/\/img04.taobaocdn.com\/bao\/uploaded\/i4\/T1CY9gXeleXXbdB.o._083629.jpg","price":"12.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u6b63\u54c1\u7b2c\u516d\u611f \u87ba\u7eb9\u67e0\u6aac\u9999\u5b89\u5168\u5957 \u907f\u5b55\u5957 \u7537 \u5b89\u5168\u5957 \u6210\u4eba\u7528\u54c112\u7247\u88c5","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiilsAvQM6bcK3pzFBGqRu%2FvplUgTzrM9W2LOuR0ck7LHgTIaKx4IJe6l0tV9FvRb5m7hLJubSJUPIuidNz0vmwe4R2G6uod9VK9ieg%3D%3D&spm=2014.21295619.1.0","commission":"0.39","commission_num":"0","commission_rate":"300.00","commission_volume":"0","item_location":"\u4e0a\u6d77","nick":"\u738b\u9648\u6c38\u7ea2","num_iid":5666869720,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1do8BXhNIXXbLj6I9_104151.jpg","price":"13.00","seller_credit_score":11,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8kofqf7%2B7IHOY2iSBJ9tktl63zVzkRTiTwVQUPFo1O54qdeGgri5UjxPOUz5du7rq247UmrukkTtnZL46Zs&spm=2014.21295619.1.0","title":"Suzle \u82cf\u6cfd\u5c14\u60c5\u8da3\u5185\u8863 \u4e01\u5b57\u88e4\u7eb9\u98ce\u4e1d\u9b45 \u5185\u88e4T\u88e4 20723\u6279\u53d1","volume":0},{"click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5i7tVTF34AiQ6j288BlhA7tjRuAsjVptXrDNNdx6jIh1ubYuL8OpsV3rMKqCXw0ax1vlRVtqW8drywiiChL%2B6KoVtUuGNPiA%2Bvl42YT%2FwDPDd8B4qFf4SxLdCgrZHs5Reg2iNqklco1vZHn9VkpEPt7zChBTScKBNY6z9%2FfBY63v4yZ080YZI%3D&spm=2014.21295619.1.0","commission":"0.90","commission_num":"0","commission_rate":"500.00","commission_volume":"0.0","item_location":"\u91cd\u5e86","nick":"\u624b\u638c\u4e0a\u7684\u9633\u5149jy","num_iid":18983060079,"pic_url":"http:\/\/img01.taobaocdn.com\/bao\/uploaded\/i1\/T1Q5nKXiRnXXbE1Jo__075706.jpg","price":"17.99","seller_credit_score":7,"shop_click_url":"http:\/\/s.click.taobao.com\/t?e=zGU0g6e1d7xnyW5hsEUqb9AEsNfAUV2tMib52gKOfOB%2Fc5AFIiAyoBJwuJNmZOukQ2PSfvidUmiNdyG0Qi29nSaefz6Hq8ATSigBvBBSeIgpPiTLC0x%2BrvtF8cCqac4UlWgkYcwV57suThnJMlhWw%2FLk%2F1bQUd07KOr2rTfiITjg2eel&spm=2014.21295619.1.0","title":"\u7f51\u8863 \u60c5\u8da3\u5185\u8863 \u7f51\u8863\u8bf1\u60d1\u9732\u4e73\u5f00\u88c6 \u5973\u8fde\u4f53\u7f51\u8863\u957f\u8896 \u7f51\u683c\u900f\u660e\u4e09\u70b9\u5f0f","volume":0}]);
+                          
+			
+		});
+	
+	</script>
+
+    
+    <style type="text/css">
+    
+    
+    	body {
+    		
+    		font:14px helvetica,verdana,san-serif;
+    		-webkit-text-size-adjust:none;
+    		overflow-x:hidden;
+    		background: rgb(240, 240, 240);
+    	}
+    	
+		body,dl,dd,form,p,ul,li,div {
+			
+			margin:0;
+			padding:0;
+		}
+	
+		table {
+			
+			border-collapse:collapse;
+			border-spacing:0;
+		}
+		
+		a { 
+			text-decoration:none;
+			color:#4e5980;
+			cursor:pointer;
+		}
+		
+		a:hover {
+			
+			text-decoration:underline;
+		}
+		
+		li {
+			
+			list-style:none;
+		}
+		
+		fieldset, img {
+			
+			border: 0;
+		}
+		
+		body {
+    
+    		background-color: #F2F2F2;
+    		background-image: url("images/bg-v3.png");
+    		color: #2A2A2A;
+		}
+		
+		.white_background {
+			
+			background: white;
+		}
+    
+    	.clearfix:after {
+    		
+    		content:'';
+    		display:block;
+    		height:0;
+    		clear:both;
+    	}
+    	
+		.clearfix {
+			
+			zoom:1;
+		}
+    
+    	.main_content {
+    	
+    		width: auto;
+    		height: auto;
+            /* padding-top: 6px; */
+    		/* border: solid 1px red; */
+    	}
+    	
+    	.main_content ul {
+    	
+    		width: 160px;
+    		height: auto;
+    		/*border: solid 1px blue;*/
+    		float: left;
+    	}
+    	
+    	.main_content li {
+    	
+    		float: left;
+    		/*width: 152px;*/
+    		width: 154px;
+    		/*padding: 5px 0;*/
+    		text-align: center;
+    		/*background: white;*/
+    		/*border: solid 1px rgb(220, 220, 220);*/
+    		
+    		/*
+    		border-radius:4px;
+			-moz-border-radius:4px;
+			-webkit-border-radius:4px;
+			*/
+
+    	}
+    	
+    	#items_l li {
+    	
+    		margin: 4px 0 0 4px;
+    	}
+    	
+    	#items_r li {
+    	
+    		margin: 4px 2px 0 2px;
+    	}
+    	
+    	.main_content li .title {
+    	
+    		background: none repeat scroll 0 0 #F7F7F7;
+    	
+    		text-align: left;
+    		padding: 6px 5px 0;
+    		width:144px;
+    		overflow: hidden;
+    		color: #666666;
+    		font-size: 100%;
+    		outline: 0 none;
+    		vertical-align: baseline;
+    	}
+    	
+    	.main_content li .hd {
+    
+    		background: url("images/bf_hd_w_154x5.png") no-repeat scroll 0 0 transparent;
+    		font-size: 0;
+    		height: 5px;
+		}
+		
+		.main_content li .ws_ft {
+    	
+    		background: url("images/bf_ft_g_154x5_v2.png") no-repeat scroll 0 0 transparent;
+    		font-size: 0;
+    		height: 5px;
+		}
+    	
+    	.main_content .favorite {
+    	
+    		background: none repeat scroll 0 0 #FFFFFF;
+    		height: 20px;
+    		padding: 5px 5px 0 6px;
+    		position: relative;
+		}
+        
+        .main_content .favorite2 {
+            
+    		background: none repeat scroll 0 0 RGBA(0, 0, 0, 0);
+    		height: 20px;
+    		padding: 0 6px;
+    		position: relative;
+		}
+    	
+    	.main_content .favorite .favaImg {
+    	
+    		background: url("images/fav_icon_word_new_1220.png") no-repeat scroll left -409px transparent;
+    		display: block;
+    		float: left;
+    		height: 20px;
+    		overflow: hidden;
+    		text-indent: -9999em;
+    		width: 49px;
+		}
+		
+		
+		.main_content .favorite .favCount {
+		
+    		background: url("images/fav_icon_word_new_1220.png") no-repeat scroll -60px -409px transparent;
+    		color: #FF579A;
+    		display: block;
+    		float: left;
+    		font-size: 12px;
+    		font-weight: bold;
+    		height: 20px;
+    		line-height: 22px;
+    		margin-left: 2px;
+    		padding-left: 4px;
+    		width: auto;
+		}
+		
+		.main_content .favorite .creply_n {
+    		
+    		color: #FE5D9B;
+    		float: right;
+    		font-size: 12px;
+    		line-height: 22px;
+		}
+		
+		.main_content .favorite .creply {
+		
+    		color: #FE5D9B;
+    		float: right;
+    		font-size: 12px;
+    		line-height: 22px;
+    		margin-right: 2px;
+		}
+		
+		.main_content .favorite i {
+		
+    		background: url("images/fav_icon_word_new_1220.png") no-repeat scroll -156px -409px transparent;
+    		display: block;
+    		float: left;
+    		height: 20px;
+    		width: 5px;
+		}
+		
+		
+		@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+		
+			body {
+    
+    			background-color: #F2F2F2;
+    			background-image: url("images/bg-v3.png");
+    			color: #2A2A2A;
+    			background-size: 50px 50px;
+			}
+		
+			.main_content .favorite .favaImg {
+    	
+    			background: url("images/fav_icon_word_new_1220.png") no-repeat scroll left -219px transparent;
+    			display: block;
+    			float: left;
+    			height: 21px;
+    			overflow: hidden;
+    			text-indent: -9999em;
+    			width: 49px;
+    			background-size: 80px 300px;
+			}
+		
+			.main_content .favorite .favCount {
+    	
+    			background: url("images/fav_icon_word_new_1220.png") no-repeat scroll 0 -241px transparent;
+    			color: #FF579A;
+    			display: block;
+    			float: left;
+    			font-size: 12px;
+    			font-weight: bold;
+    			height: 21px;
+    			line-height: 22px;
+    			margin-left: 2px;
+    			padding-left: 4px;
+    			width: auto;
+    			background-size: 80px 300px;
+			}
+			
+			.main_content .favorite i {
+		
+    			background: url("images/fav_icon_word_new_1220.png") no-repeat scroll -76px -241px transparent;
+    			display: block;
+    			float: left;
+    			height: 20px;
+    			width: 5px;
+    			background-size: 80px 300px;
+			}
+			
+			.main_content li .hd {
+    
+    			background: url("images/bf_hd_w_308x10.png") no-repeat scroll 0 0 transparent;
+    			font-size: 0;
+    			height: 5px;
+    			background-size: 154px 5px;
+			}
+		
+			.main_content li .ws_ft {
+    		
+    			background: url("images/bf_ft_g_308x10_v2.png") no-repeat scroll 0 0 transparent;
+    			font-size: 0;
+    			height: 5px;
+    			background-size: 154px 5px;
+			}
+		}
+    	    	
+    	.main_content li .lazy_img {
+    		
+    		min-height: 142px;
+    		min-width: 142px;
+    		position: relative;
+    		/* background: url(images/index.png) no-repeat; */
+    	}
+    	
+    	.main_content li .lazy_img > .p {
+    	
+			background-color: rgba(0, 0, 0, 0.2);
+		}
+		
+		.main_content li .lazy_img .p {
+    
+    		border-radius: 3px 3px 3px 3px;
+    		bottom: 5px;
+    		color: #FFFFFF;
+    		display: block;
+    		font-family: '微软雅黑',tahoma;
+    		height: 16px;
+    		line-height: 16px;
+    		padding: 0 2px;
+    		position: absolute;
+    		right: 10px;
+		}
+        
+        .height_5 {
+            
+            height:5px;
+        }
+        
+        #more_loading {
+            
+            width: 312px;
+            margin: 4px;
+    		height: 50px;
+            padding-top: 10px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            text-shadow:rgba(255, 255, 255, 0.496094) 0 1px 0;
+            font-size: 16px;
+        }
+        
+        #more_button {
+            
+            width: 312px;
+            margin: 4px;
+    		/*height: 50px;*/
+            padding-top: 10px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            text-shadow:rgba(255, 255, 255, 0.496094) 0 1px 0;
+            font-size: 16px;
+        }
+        
+        #more_button button {
+            
+            width: 180px;
+    		height: 50px;
+            font-size: 16px;
+            border: solid 1px rgb(220, 220, 220);
+        }
+
+    
+    </style>
+
+   
+    
+</head>
+<body>
+    
+
+    <div class="main_content clearfix">
+    	<ul id="items_l"></ul>  	
+    	<ul id="items_r"></ul>
+    </div> 
+    
+    <div class="clearfix height_5"></div>
+    <div id="more_button"><button onclick="loadmore();">加载更多内容</button></div>
+    <div id="more_loading">正在加载...</div>
+    
+</body>
+</html>       
