@@ -23,3 +23,14 @@ build/
 .hg
 .svn
 CVS
+SexToys/www/.DS_Store
+
+SexToys/.DS_Store
+
+leveldb/.DS_Store
+
+leveldb/doc/.DS_Store
+
+leveldb/helpers/.DS_Store
+
+leveldb/port/.DS_Store
