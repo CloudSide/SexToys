@@ -574,6 +574,7 @@ request = _request;
     NSArray *items = nil;
     NSInteger aIndex = 0;
     
+    /*
     if ([_items count] >= 3) {
         
         if (index == [_items count] - 1) {
@@ -602,6 +603,39 @@ request = _request;
         items = [NSArray arrayWithObjects:[_items objectAtIndex:index], nil];
         aIndex = 0;
     }
+    */
+    
+    NSInteger size = 7;
+    NSInteger center = size / 2;
+    
+    
+    if ([_items count] <= size && [_items count] > 0) {
+        
+        items = [NSArray arrayWithArray:_items];
+        aIndex = index;
+    
+    } else if ([_items count] > size) {
+    
+        if (index <= center) {
+            
+            aIndex = index;
+            items = [_items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, size)]];
+            
+        } else if (index > center) {
+        
+            if ([_items count] - 1 >= index + center) {
+                
+                aIndex = center;
+                items = [_items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index - center, size)]];
+            
+            } else if ([_items count] - 1 < index + center) {
+            
+                aIndex = index - ([_items count] - size);
+                items = [_items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange([_items count] - size, size)]];
+            }
+        }
+    }
+    
     
     contentController.contentList = items;
     contentController.currentPage = aIndex;
