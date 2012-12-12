@@ -143,6 +143,12 @@
     [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
     [_request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     
+    [_request setAllowCompressedResponse:YES];
+    [_request setShouldWaitToInflateCompressedResponses:NO];
+    [_request setShouldAttemptPersistentConnection:YES];
+    [_request setNumberOfTimesToRetryOnTimeout:3];
+    [_request setShouldAttemptPersistentConnection:YES];
+    
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"loadCate" forKey:@"action"];
     
     [_request setUserInfo:userInfo];

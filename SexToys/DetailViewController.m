@@ -103,6 +103,12 @@
     [_loadRequest setDownloadCache:[ASIDownloadCache sharedCache]];
     [_loadRequest setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
     [_loadRequest setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
+    
+    [_loadRequest setAllowCompressedResponse:YES];
+    [_loadRequest setShouldWaitToInflateCompressedResponses:NO];
+    [_loadRequest setShouldAttemptPersistentConnection:YES];
+    [_loadRequest setNumberOfTimesToRetryOnTimeout:3];
+    [_loadRequest setShouldAttemptPersistentConnection:YES];
 
     [_loadRequest addRequestHeader:@"User-Device" value:[NSString stringWithFormat:@"%@/guest", _UUID]];
     [_loadRequest startSynchronous];
