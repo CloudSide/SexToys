@@ -44,7 +44,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	ASIHTTPRequest *checkRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:kUploadCheckURL]];
-    [checkRequest setNumberOfTimesToRetryOnTimeout:3];
+    //[checkRequest setNumberOfTimesToRetryOnTimeout:3];
 	[checkRequest startSynchronous];
 	
 	NSError *error = [checkRequest error];

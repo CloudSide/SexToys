@@ -1194,7 +1194,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Bruce Chen (KKYLDFR684)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Bruce Chen";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SexToys/SexToys-Prefix.pch";
 				INFOPLIST_FILE = "SexToys/SexToys-Info.plist";
@@ -1206,7 +1206,7 @@
 					"\"$(SRCROOT)/SexToys\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "AA482A80-71F4-411A-9587-FE6880315239";
+				PROVISIONING_PROFILE = "7CF7C1D7-CCF0-40E9-8003-316A5F23E4A6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

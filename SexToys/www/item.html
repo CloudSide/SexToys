@@ -42,6 +42,35 @@
             $("#item_img_url").attr("src", data.pic_url);
             //$("#item_time").html(data.ExpireTime);
             
+            
+            if (typeof(data.width) == "number" && typeof(data.height) == "number" && data.width > 0 && data.height > 0) {
+                
+                var w = 306;
+                var h = 306;
+                
+                if (data.width <= 306 && data.height <= 306) {
+                
+                    w = data.width;
+                    h = data.height;
+                
+                } else if (data.width > data.height) {
+                
+                    w = 306;
+                    h = data.height / data.width * w;
+                
+                } else if (data.width < data.height) {
+                    
+                    h = 306;
+                    w = data.width / data.height * h;
+                }
+                
+                $("#item_img_content_inner").css({"background-color":"rgb(227, 227, 227)", "width":w, "height":h, "margin":"0 auto"});
+          
+            } else {
+            
+                //$("#item_img_content_inner").css("background-color":"rgb(227, 227, 227)", "width":12, "height":12);
+            }
+            
             $("#item_content").show();
         }
 		
@@ -159,10 +188,10 @@
                                                      
                                                      });              
                           */                
-                                          
+                          
             document.documentElement.style.webkitUserSelect = 'none';  
             
-            $("#item_content").hide();
+            //$("#item_content").hide();
                           
             startload();
                 
@@ -500,7 +529,7 @@
     	
     	<div style="min-height:30px;">
     		<div class="item_img_area" id="item_img_area">
-    			<div class="item_img_content"><img id="item_img_url" src="images/index.png"  /></div>
+    			<div class="item_img_content"><div id="item_img_content_inner"><img id="item_img_url" src="images/index.png" /></div></div>
     		</div>
     	</div>
     	
