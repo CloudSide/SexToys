@@ -97,9 +97,20 @@ request = _request;
     CGFloat top = MARGIN;
     CGFloat left = MARGIN;
     
+    
     // Image
-    CGFloat objectWidth = [[self.object objectForKey:@"width"] floatValue];
-    CGFloat objectHeight = [[self.object objectForKey:@"height"] floatValue];
+    CGFloat objectWidth = 100.0f;
+    CGFloat objectHeight = 100.0f;
+    
+    if ([[self.object objectForKey:@"width"] isKindOfClass:[NSNumber class]] && [[self.object objectForKey:@"height"] isKindOfClass:[NSNumber class]]) {
+            
+        if ([[self.object objectForKey:@"width"] floatValue] >= 0.0f && [[self.object objectForKey:@"height"] floatValue] >= 0.0f) {
+            
+            objectWidth = [[self.object objectForKey:@"width"] floatValue];
+            objectHeight = [[self.object objectForKey:@"height"] floatValue];
+        }
+    }
+    
     CGFloat scaledHeight = floorf(objectHeight / (objectWidth / width));
     self.imageView.frame = CGRectMake(left, top, width, scaledHeight);
     

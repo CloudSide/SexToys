@@ -514,30 +514,20 @@ request = _request;
 
 - (PSCollectionViewCell *)collectionView:(PSCollectionView *)collectionView viewAtIndex:(NSInteger)index {
     
-    NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:[self.items objectAtIndex:index]];
-    
-    /*
-    if (![item objectForKey:@"height"] || ![item objectForKey:@"width"]) {
-        
-        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"width"];
-        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"height"];
-    }
-     */
+    NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:[self.items objectAtIndex:index]];    
     
     if (![item objectForKey:@"height"] ||
         ![item objectForKey:@"width"] ||
-        [[item objectForKey:@"height"] isEqual:[NSNull null]] ||
-        [[item objectForKey:@"width"] isEqual:[NSNull null]] ||
-        ([[item objectForKey:@"width"] isKindOfClass:[NSNumber class]] &&
-         [[item objectForKey:@"width"] floatValue] == 0.0f) ||
-        ([[item objectForKey:@"height"] isKindOfClass:[NSNumber class]] &&
-         [[item objectForKey:@"height"] floatValue] == 0.0f)) {
-            
-            
-            [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"width"];
-            [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"height"];
+        ![[item objectForKey:@"width"] isKindOfClass:[NSNumber class]] ||
+        ![[item objectForKey:@"height"] isKindOfClass:[NSNumber class]] ||
+        [[item objectForKey:@"width"] floatValue] <= 0.0f ||
+        [[item objectForKey:@"height"] floatValue] <= 0.0f) {
         
+    
+        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"width"];
+        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"height"];
     }
+    
     
     PSBroView *v = (PSBroView *)[self.collectionView dequeueReusableView];
     
@@ -554,23 +544,16 @@ request = _request;
 - (CGFloat)heightForViewAtIndex:(NSInteger)index {
 
     NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:[self.items objectAtIndex:index]];
-    
-    if (![item objectForKey:@"height"] ||
-        ![item objectForKey:@"width"] ||
-        [[item objectForKey:@"height"] isEqual:[NSNull null]] ||
-        [[item objectForKey:@"width"] isEqual:[NSNull null]] ||
-        ([[item objectForKey:@"width"] isKindOfClass:[NSNumber class]] &&
-         [[item objectForKey:@"width"] floatValue] == 0.0f) ||
-        ([[item objectForKey:@"height"] isKindOfClass:[NSNumber class]] &&
-         [[item objectForKey:@"height"] floatValue] == 0.0f)) {
             
+    if ([[item objectForKey:@"width"] isKindOfClass:[NSNumber class]] && [[item objectForKey:@"height"] isKindOfClass:[NSNumber class]]) {
         
-        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"width"];
-        [item setValue:[NSNumber numberWithFloat:100.0f] forKey:@"height"];
-    
+        if ([[item objectForKey:@"width"] floatValue] >= 0.0f && [[item objectForKey:@"height"] floatValue] >= 0.0f) {
+            
+            return [PSBroView heightForViewWithObject:item inColumnWidth:self.collectionView.colWidth];
+        }
     }
     
-    return [PSBroView heightForViewWithObject:item inColumnWidth:self.collectionView.colWidth];
+    return 100.0f;
 }
 
 - (void)collectionView:(PSCollectionView *)collectionView didSelectView:(PSCollectionViewCell *)view atIndex:(NSInteger)index {
