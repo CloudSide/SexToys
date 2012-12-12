@@ -231,8 +231,11 @@
     
     if (indexPath.row == 0 && indexPath.section == 0) {
         
-        CGRect bounds = CGRectMake(0, 0, tableView.bounds.size.width - 2.0, 44.0);
-        CGRect rect = CGRectInset(bounds, 17.0, 11.0);
+        //CGRect bounds = CGRectMake(0, 0, tableView.bounds.size.width - 2.0, 44.0);
+        //CGRect rect = CGRectInset(bounds, 17.0, 11.0);
+        
+        CGRect bounds;
+        CGRect rect;
         
         cell.frame = CGRectMake(0.0, 0.0, cell.frame.size.width, 150.0);
 		

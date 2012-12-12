@@ -148,6 +148,7 @@ request = _request;
         _page = 1;
         _isLastPage = NO;
         [self startLoading];
+        //[_collectionView setContentOffset:CGPointZero animated:YES];
     }    
 }
 

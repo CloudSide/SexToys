@@ -37,6 +37,7 @@
 - (void)startLoading;
 - (void)stopLoading;
 - (void)refresh;
+- (void)reloadData;
 
 
 @end

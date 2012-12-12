@@ -24,6 +24,10 @@
         
         NSMutableArray *datasource = [NSMutableArray array];
         
+        _listViewController00 = nil;
+        _listViewController01 = nil;
+        _listViewController02 = nil;
+        
         /*
         Here's the fun part. What we need to do is creat a datasource array that uses this structure
          
@@ -181,6 +185,9 @@
 
 - (void)dealloc {
     
+    [_listViewController00 release];
+    [_listViewController01 release];
+    [_listViewController02 release];
     [_datasource release];
     [_searchDatasource release];
     
@@ -195,10 +202,14 @@
 
 - (UIViewController *)initialViewController {
     
-    PSViewController *listViewController = [[PSViewController alloc] initWithNibName:@"PSViewController_iPhone" bundle:nil];
-    listViewController.userinfo = [[[[_datasource objectAtIndex:0] objectForKey:kSlideViewControllerSectionViewControllersKey] objectAtIndex:1] objectForKey:kSlideViewControllerViewControllerUserInfoKey];
+    if (_listViewController01 == nil) {
         
-    return [listViewController autorelease];    
+        _listViewController01 = [[PSViewController alloc] initWithNibName:@"PSViewController_iPhone" bundle:nil];
+        _listViewController01.userinfo = [[[[_datasource objectAtIndex:0] objectForKey:kSlideViewControllerSectionViewControllersKey] objectAtIndex:1] objectForKey:kSlideViewControllerViewControllerUserInfoKey];
+        
+    }
+        
+    return _listViewController01;
 }
 
 - (NSIndexPath *)initialSelectedIndexPath {
@@ -214,10 +225,94 @@
         NSDictionary *info = (NSDictionary *)userInfo;
         PSViewController *listViewController = (PSViewController *)viewController;
         listViewController.userinfo = info;
+        
+        if (![listViewController.userinfo isEqual:userInfo]) {
+            
+            listViewController.userinfo = info;
+        }
+        
+        //[listViewController reloadData];
     }
-     
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    NSDictionary *viewControllerDictionary = nil;
+    
+    if (_slideNavigationControllerState == kSlideNavigationControllerStateSearching) {
+        
+        viewControllerDictionary = [[self.delegate searchDatasource] objectAtIndex:indexPath.row];
+    
+    } else {
+        
+        viewControllerDictionary = [[[[self.delegate datasource] objectAtIndex:indexPath.section] objectForKey:kSlideViewControllerSectionViewControllersKey] objectAtIndex:indexPath.row];
+    }
+    
+    Class viewControllerClass = [viewControllerDictionary objectForKey:kSlideViewControllerViewControllerClassKey];
+    NSString *nibNameOrNil = [viewControllerDictionary objectForKey:kSlideViewControllerViewControllerNibNameKey];
+    UIViewController *viewController = nil;
+    
+    if (indexPath.section == 0) {
+        
+        if (indexPath.row == 0) {
+            
+            if (_listViewController00 == nil) {
+                
+                _listViewController00 = [[PSViewController alloc] initWithNibName:@"PSViewController_iPhone" bundle:nil];
+                
+            } 
+                
+            viewController = _listViewController00;
+            
+            
+        } else if (indexPath.row == 1) {
+            
+            if (_listViewController01 == nil) {
+                
+                _listViewController01 = [[PSViewController alloc] initWithNibName:@"PSViewController_iPhone" bundle:nil];
+                
+            } 
+                
+            viewController = _listViewController01;
+            
+            
+        } else if (indexPath.row == 2) {
+            
+            if (_listViewController02 == nil) {
+                
+                _listViewController02 = [[PSViewController alloc] initWithNibName:@"PSViewController_iPhone" bundle:nil];
+                
+            } 
+                
+            viewController = _listViewController02;
+            
+        
+        } else {
+        
+            viewController = [[[viewControllerClass alloc] initWithNibName:nibNameOrNil bundle:nil] autorelease];
+        }
+    
+    } else {
+    
+         viewController = [[[viewControllerClass alloc] initWithNibName:nibNameOrNil bundle:nil] autorelease];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(configureViewController:userInfo:)]) {
+        
+        [self.delegate configureViewController:viewController userInfo:[viewControllerDictionary objectForKey:kSlideViewControllerViewControllerUserInfoKey]];
+    }
+    
+    [self configureViewController:viewController];
+    
+    [_slideNavigationController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+    
+    //[viewController release];
+    
+    [self slideInSlideNavigationControllerView];
     
 }
+
 /*
 - (void)configureSearchDatasourceWithString:(NSString *)string {
 
