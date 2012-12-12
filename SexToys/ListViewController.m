@@ -187,11 +187,11 @@
     
     if (_cateId) {
         
-        self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[@"http://www.worldgogo.com/xjb/cats.php" stringByAppendingFormat:@"?t=%@&pgno=%d", _cateId, _page]]];
+        self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[kApiItemsOfCateURL stringByAppendingFormat:@"?t=%@&pgno=%d", _cateId, _page]]];
         
     } else {
     
-        self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[kApiItemsURL stringByAppendingFormat:@"?t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page]]];
+        self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[kApiItemsOfGuideURL stringByAppendingFormat:@"?t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page]]];
     }
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"loadmore" forKey:@"action"];

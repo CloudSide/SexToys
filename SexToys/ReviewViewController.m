@@ -78,7 +78,7 @@
 
 - (void)_post {
 
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:kApiReviewURL]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:kApiFeedbackURL]];
     
     [request setRequestMethod:@"POST"];
     //[request addRequestHeader:@"User-Device" value:[NSString stringWithFormat:@"%@/", _UUID]];

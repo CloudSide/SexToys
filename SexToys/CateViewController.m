@@ -137,7 +137,7 @@
         return;        
     }
     
-    self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://worldgogo.com/xjb/get_cats.php"]];
+    self.request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:kApiCatesURL]];
     
     [_request setDownloadCache:[ASIDownloadCache sharedCache]];
     [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy

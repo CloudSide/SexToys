@@ -31,7 +31,7 @@
 
 - (void)openTaobao {
     
-    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://my.m.taobao.com/myTaobao.htm"]] autorelease];
+    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:kMyTaobaoURL]] autorelease];
     webViewController.availableActions = SVWebViewControllerAvailableActionsNone | SVWebViewControllerAvailableActionsOpenInSafari;
 	[[AppDelegate sharedAppDelegate].navigationController pushViewController:webViewController animated:YES];
     
@@ -40,7 +40,7 @@
 
 - (void)openAbout {
     
-    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.worldgogo.com/xjb/about.html"]] autorelease];
+    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:kApiAboutURL]] autorelease];
     webViewController.availableActions = SVWebViewControllerAvailableActionsNone | SVWebViewControllerAvailableActionsOpenInSafari;
 	[[AppDelegate sharedAppDelegate].navigationController pushViewController:webViewController animated:YES];
     

@@ -52,7 +52,7 @@
 
 - (void)openTaobao {
 
-    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://my.m.taobao.com/myTaobao.htm"]] autorelease];
+    TopWebViewController *webViewController = [[[TopWebViewController alloc] initWithURL:[NSURL URLWithString:kMyTaobaoURL]] autorelease];
     webViewController.availableActions = SVWebViewControllerAvailableActionsNone | SVWebViewControllerAvailableActionsOpenInSafari;
 	[self.navigationController pushViewController:webViewController animated:YES];
     

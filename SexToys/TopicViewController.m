@@ -133,11 +133,9 @@
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:176.0/255.0 alpha:1.0]];
     
     
-    //NSString *filePath = [[NSBundle mainBundle] pathForResource:@"htp://worldgogo.com/xjb/forum.htmlt" ofType:nil];
-    
     if (_contentURL == nil) {
         
-        self.contentURL = @"http://worldgogo.com/xjb/topic.php";
+        self.contentURL = kApiTopicURL;
         
     } else {
     

@@ -384,11 +384,11 @@ request = _request;
     
     if (_cateId) {
         
-        URLPath = [@"http://www.worldgogo.com/xjb/cats.php" stringByAppendingFormat:@"?t=%@&pgno=%d", _cateId, _page];
+        URLPath = [kApiItemsOfCateURL stringByAppendingFormat:@"?t=%@&pgno=%d", _cateId, _page];
         
     } else {
         
-        URLPath = [kApiItemsURL stringByAppendingFormat:@"?t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page];
+        URLPath = [kApiItemsOfGuideURL stringByAppendingFormat:@"?t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page];
     }
     
     // Request

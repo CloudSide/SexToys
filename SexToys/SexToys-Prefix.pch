@@ -22,12 +22,21 @@
 #endif
 
 
-#define kApiItemsURL                        @"http://worldgogo.com/xjb/guide.php"
-#define kApiItemURL                         @"http://worldgogo.com/xjb/get_product_detail.php"
 
-#define kApiLikeURL                         @"http://m.95e.com/95e/dailydeals/like.aspx"
-#define kApiReviewURL                       @"http://worldgogo.com/xjb/feedback.php"
 #define kUploadCheckURL					    @"http://rest.sinaapp.com/sextoys_check_update/"
+#define kMyTaobaoURL                        @"http://my.m.taobao.com/myTaobao.htm"
+
+#define kApiDomain                          @"http://worldgogo.com/"
+
+#define kApiItemsOfGuideURL                 [kApiDomain stringByAppendingString:@"xjb/guide.php"]
+#define kApiItemURL                         [kApiDomain stringByAppendingString:@"xjb/get_product_detail.php"]
+#define kApiFeedbackURL                     [kApiDomain stringByAppendingString:@"xjb/feedback.php"]
+#define kApiCatesURL                        [kApiDomain stringByAppendingString:@"xjb/get_cats.php"]
+#define kApiItemsOfCateURL                  [kApiDomain stringByAppendingString:@"xjb/cats.php"]
+#define kApiAboutURL                        [kApiDomain stringByAppendingString:@"xjb/about.html"]
+#define kApiTopicURL                        [kApiDomain stringByAppendingString:@"xjb/topic.php"]
+
+
 
 
 #define kUUID           @"UUID"
