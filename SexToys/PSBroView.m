@@ -133,7 +133,7 @@ request = _request;
     
     [super fillViewWithObject:object];
     
-    self.imageView.image = nil;
+    self.imageView.image = [UIImage imageNamed:@"gray.png"];
     
     NSURL *url = [NSURL URLWithString:[object objectForKey:@"pic_url"]];
     

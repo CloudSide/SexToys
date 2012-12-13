@@ -152,6 +152,7 @@
 		3291392E1672FFB90039E1C9 /* libleveldb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3291392B1672FE990039E1C9 /* libleveldb.a */; };
 		32913930167300900039E1C9 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3291392F167300900039E1C9 /* AssetsLibrary.framework */; };
 		32913932167300AF0039E1C9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32913931167300AF0039E1C9 /* Security.framework */; };
+		3F432AEA167978CC001ECBDE /* gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F432AE9167978CC001ECBDE /* gray.png */; };
 		3F6459F21675AE6A006935C8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6459F01675AE6A006935C8 /* SettingsViewController.m */; };
 		3F6459F31675AE6A006935C8 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F6459F11675AE6A006935C8 /* SettingsViewController.xib */; };
 		3F6459F71675BA42006935C8 /* SettingLockerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6459F61675BA42006935C8 /* SettingLockerViewController.m */; };
@@ -398,6 +399,7 @@
 		3291392B1672FE990039E1C9 /* libleveldb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libleveldb.a; path = leveldb/libleveldb.a; sourceTree = SOURCE_ROOT; };
 		3291392F167300900039E1C9 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		32913931167300AF0039E1C9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3F432AE9167978CC001ECBDE /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gray.png; sourceTree = "<group>"; };
 		3F6459EF1675AE6A006935C8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3F6459F01675AE6A006935C8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		3F6459F11675AE6A006935C8 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 		3234AFF3166B303D0022DE2B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3F432AE9167978CC001ECBDE /* gray.png */,
 				324157DE16761C1A0018F6CF /* X.png */,
 				324157DF16761C1A0018F6CF /* X@2x.png */,
 				3F645A2816760051006935C8 /* home.png */,
@@ -1034,6 +1037,7 @@
 				3F645A2B16760052006935C8 /* home@2x.png in Resources */,
 				324157E016761C1A0018F6CF /* X.png in Resources */,
 				324157E116761C1A0018F6CF /* X@2x.png in Resources */,
+				3F432AEA167978CC001ECBDE /* gray.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
