@@ -102,12 +102,12 @@
         [hotViewControllerTwoDictionary setObject:hotTwoUserInfo forKey:kSlideViewControllerViewControllerUserInfoKey];
         
         NSMutableDictionary *hotViewControllerThreeDictionary = [NSMutableDictionary dictionary];
-        [hotViewControllerThreeDictionary setObject:@"货到付款" forKey:kSlideViewControllerViewControllerTitleKey];
+        [hotViewControllerThreeDictionary setObject:@"特价商品" forKey:kSlideViewControllerViewControllerTitleKey];
         [hotViewControllerThreeDictionary setObject:[PSViewController class] forKey:kSlideViewControllerViewControllerClassKey];
         [hotViewControllerThreeDictionary setObject:@"PSViewController_iPhone" forKey:kSlideViewControllerViewControllerNibNameKey];
         //[hotViewControllerThreeDictionary setObject:[UIImage imageNamed:@"icon_cate_bags.png"] forKey:kSlideViewControllerViewControllerIconKey];
         NSMutableDictionary *hotThreeUserInfo = [NSMutableDictionary dictionary];
-        [hotThreeUserInfo setObject:@"货到付款" forKey:@"name"];
+        [hotThreeUserInfo setObject:@"特价商品" forKey:@"name"];
         [hotThreeUserInfo setObject:@"3" forKey:@"type"];
         [hotViewControllerThreeDictionary setObject:hotThreeUserInfo forKey:kSlideViewControllerViewControllerUserInfoKey];
         
