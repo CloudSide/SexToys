@@ -35,7 +35,7 @@
 #define kApiCatesURL                        [kApiDomain stringByAppendingFormat:@"xjb/get_cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 #define kApiItemsOfCateURL                  [kApiDomain stringByAppendingFormat:@"xjb/cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 #define kApiAboutURL                        [kApiDomain stringByAppendingFormat:@"xjb/about.html#%@", [Static infoValueForKey:@"CFBundleShortVersionString"]]
-#define kApiTopicURL                        [kApiDomain stringByAppendingString:@"xjb/topic.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiTopicURL                        [kApiDomain stringByAppendingFormat:@"xjb/topic.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 
 
 
