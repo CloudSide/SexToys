@@ -19,6 +19,7 @@
     #import "VdiskUtil.h"
     #import "LdbHandler.h"
     #import "AppDelegate.h"
+    #import "SBJson.h"
 #endif
 
 
@@ -33,18 +34,20 @@
 #define kApiFeedbackURL                     [kApiDomain stringByAppendingString:@"xjb/feedback.php"]
 #define kApiCatesURL                        [kApiDomain stringByAppendingString:@"xjb/get_cats.php"]
 #define kApiItemsOfCateURL                  [kApiDomain stringByAppendingString:@"xjb/cats.php"]
-#define kApiAboutURL                        [kApiDomain stringByAppendingString:@"xjb/about.html"]
+#define kApiAboutURL                        [kApiDomain stringByAppendingFormat:@"xjb/about.html#%@", [Static infoValueForKey:@"CFBundleShortVersionString"]]
 #define kApiTopicURL                        [kApiDomain stringByAppendingString:@"xjb/topic.php"]
 
 
 
 
-#define kUUID           @"UUID"
+#define kUUID                               @"UUID"
 
 
-#define         RGBCOLOR(r,g,b)             [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
-#define         RGBACOLOR(r,g,b,a)          [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
-#define         kShareAppDelegate           [AppDelegate sharedAppDelegate]
+#define                                     RGBCOLOR(r,g,b)             [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
+#define                                     RGBACOLOR(r,g,b,a)          [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+#define                                     kShareAppDelegate           [AppDelegate sharedAppDelegate]
+
+
 
 
 #define kTagVdiskOperationFileActionSheet               10001
