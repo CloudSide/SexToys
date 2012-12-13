@@ -27,15 +27,15 @@
 #define kUploadCheckURL					    @"http://rest.sinaapp.com/sextoys_check_update/"
 #define kMyTaobaoURL                        @"http://my.m.taobao.com/myTaobao.htm"
 
-#define kApiDomain                          @"http://worldgogo.com/"
+#define kApiDomain                          @"http://qingqubao.net/"
 
-#define kApiItemsOfGuideURL                 [kApiDomain stringByAppendingString:@"xjb/guide.php"]
-#define kApiItemURL                         [kApiDomain stringByAppendingString:@"xjb/get_product_detail.php"]
-#define kApiFeedbackURL                     [kApiDomain stringByAppendingString:@"xjb/feedback.php"]
-#define kApiCatesURL                        [kApiDomain stringByAppendingString:@"xjb/get_cats.php"]
-#define kApiItemsOfCateURL                  [kApiDomain stringByAppendingString:@"xjb/cats.php"]
+#define kApiItemsOfGuideURL                 [kApiDomain stringByAppendingFormat:@"xjb/guide.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiItemURL                         [kApiDomain stringByAppendingFormat:@"xjb/get_product_detail.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiFeedbackURL                     [kApiDomain stringByAppendingFormat:@"xjb/feedback.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiCatesURL                        [kApiDomain stringByAppendingFormat:@"xjb/get_cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiItemsOfCateURL                  [kApiDomain stringByAppendingFormat:@"xjb/cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 #define kApiAboutURL                        [kApiDomain stringByAppendingFormat:@"xjb/about.html#%@", [Static infoValueForKey:@"CFBundleShortVersionString"]]
-#define kApiTopicURL                        [kApiDomain stringByAppendingString:@"xjb/topic.php"]
+#define kApiTopicURL                        [kApiDomain stringByAppendingString:@"xjb/topic.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 
 
 

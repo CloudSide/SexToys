@@ -14,9 +14,10 @@
 #import "ASIHTTPRequest.h"
 #import "ASIDownloadCache.h"
 
+
 #define MARGIN 4.0 
 
-@interface PSBroView ()
+@interface PSBroView () <ASIHTTPRequestDelegate>
 
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UILabel *captionLabel;
@@ -79,6 +80,8 @@ request = _request;
 
 - (void)dealloc {
     
+    NSLog(@"[PSBroView dealloc]");
+    
     self.imageView = nil;
     self.captionLabel = nil;
     self.captionLabel2 = nil;
@@ -137,38 +140,15 @@ request = _request;
     
     NSURL *url = [NSURL URLWithString:[object objectForKey:@"pic_url"]];
     
-    self.request = [ASIHTTPRequest requestWithURL:url];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    
+    self.request = request;
     [_request setDownloadCache:[ASIDownloadCache sharedCache]];
     [_request setCachePolicy:ASIOnlyLoadIfNotCachedCachePolicy];
     [_request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     [[ASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:NO];
-    
-    [_request setCompletionBlock:^ {
-    
-        /*
-        if ([_request didUseCachedResponse]) {
-            
-            NSLog(@"[_request didUseCachedResponse]");
-        }*/
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-          //  UIImage *img = [UIImage imageWithData:[_request responseData]];
-            
-            //dispatch_async(dispatch_get_main_queue(), ^{
-            
-                //self.imageView.image = img;
-        [self.imageView performSelector:@selector(setImage:) withObject:[UIImage imageWithData:[_request responseData]] afterDelay:0.1];
-            //});
-            
-        //});
-        
-    }];
-    
-    [_request setFailedBlock:^{
-        
-        NSError *error = [_request error];
-        NSLog(@"%@", error);
-    }];
+    [_request setDelegate:self];
     
     [_request start];
     
@@ -234,5 +214,23 @@ request = _request;
     
     return height;
 }
+
+#pragma - mark ASIHTTPRequestDelegate
+
+- (void)requestFinished:(ASIHTTPRequest *)request {
+
+    [self.imageView performSelector:@selector(setImage:) withObject:[UIImage imageWithData:[_request responseData]] afterDelay:0.01];
+}
+
+
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+
+    NSError *error = [_request error];
+    NSLog(@"%@", error);
+}
+
+
+
 
 @end

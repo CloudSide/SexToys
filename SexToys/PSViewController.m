@@ -242,10 +242,11 @@ request = _request;
 
 - (void)dealloc {
     
+    NSLog(@"[PSViewController dealloc]");
+    
     self.collectionView.delegate = nil;
     self.collectionView.collectionViewDelegate = nil;
     self.collectionView.collectionViewDataSource = nil;
-    
     self.collectionView = nil;
     self.items = nil;
     
@@ -264,7 +265,7 @@ request = _request;
     
     [_loadingLabel release];
     
-    [_request cancel];
+    [_request clearDelegatesAndCancel];
     [_request release], _request = nil;
     
     [super dealloc];
@@ -384,20 +385,23 @@ request = _request;
     
     if (_cateId) {
         
-        URLPath = [kApiItemsOfCateURL stringByAppendingFormat:@"?t=%@&pgno=%d", _cateId, _page];
+        URLPath = [kApiItemsOfCateURL stringByAppendingFormat:@"&t=%@&pgno=%d", _cateId, _page];
         
     } else {
         
-        URLPath = [kApiItemsOfGuideURL stringByAppendingFormat:@"?t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page];
+        URLPath = [kApiItemsOfGuideURL stringByAppendingFormat:@"&t=%@&pgno=%d", [_userinfo objectForKey:@"type"], _page];
     }
     
     // Request
     NSURL *URL = [NSURL URLWithString:URLPath];
     
-    self.request = [ASIHTTPRequest requestWithURL:URL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
+    [request setDelegate:self];
+    
+    self.request = request;
     
     [_request setDownloadCache:[ASIDownloadCache sharedCache]];
-    [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
+    [_request setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy]; //ASIAskServerIfModifiedCachePolicy
     [_request setCacheStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
     
     [_request setAllowCompressedResponse:YES];
@@ -405,54 +409,7 @@ request = _request;
     [_request setShouldAttemptPersistentConnection:YES];
     //[_request setNumberOfTimesToRetryOnTimeout:3];
     [_request setShouldAttemptPersistentConnection:YES];
-    
     //[[ASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:NO];
-    
-    [_request setCompletionBlock:^ {
-        
-        id res = [NSJSONSerialization JSONObjectWithData:[_request responseData] options:NSJSONReadingMutableContainers error:nil];
-        
-        if (res && [res isKindOfClass:[NSArray class]]) {
-            
-            if ([(NSArray *)res count] == 0) {
-                
-                _isLastPage = YES;
-                
-            } else {
-                
-                [self.items addObjectsFromArray:res];
-                
-                if (_page == 1) {
-                    
-                    [self.items removeAllObjects];
-                }
-                
-                _page++;
-                
-                [self.items addObjectsFromArray:res];
-                
-                [self dataSourceDidLoad];
-            }
-            
-        } else {
-            
-            [self dataSourceDidError];
-        }
-        
-        [self stopLoading];
-        
-    }];
-    
-    [_request setFailedBlock:^{
-        
-        NSError *error = [_request error];
-        NSLog(@"%@", error);
-        
-        [self dataSourceDidError];
-        
-        [self stopLoading];
-        
-    }];
     
     [_request start];
     
@@ -704,5 +661,53 @@ request = _request;
         
     }
 }
+
+#pragma - mark ASIHTTPRequest
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+
+    NSError *error = [_request error];
+    NSLog(@"%@", error);
+    
+    [self dataSourceDidError];
+    
+    [self stopLoading];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request {
+
+    id res = [NSJSONSerialization JSONObjectWithData:[_request responseData] options:NSJSONReadingMutableContainers error:nil];
+    
+    if (res && [res isKindOfClass:[NSArray class]]) {
+        
+        if ([(NSArray *)res count] == 0) {
+            
+            _isLastPage = YES;
+            
+        } else {
+            
+            [self.items addObjectsFromArray:res];
+            
+            if (_page == 1) {
+                
+                [self.items removeAllObjects];
+            }
+            
+            _page++;
+            
+            [self.items addObjectsFromArray:res];
+            
+            [self dataSourceDidLoad];
+        }
+        
+    } else {
+        
+        [self dataSourceDidError];
+    }
+    
+    [self stopLoading];
+
+}
+
 
 @end

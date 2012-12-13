@@ -187,6 +187,9 @@ indexToRectMap = _indexToRectMap;
 }
 
 - (void)dealloc {
+    
+    NSLog(@"[PSCollectionView dealloc]");
+    
     // clear delegates
     self.delegate = nil;
     self.collectionViewDataSource = nil;

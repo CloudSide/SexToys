@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ASIHTTPRequestDelegate.h"
 #import "PSCollectionView.h"
 
-@interface PSViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource, UIScrollViewDelegate> {
+@interface PSViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource, UIScrollViewDelegate, ASIHTTPRequestDelegate> {
 
     BOOL _isDragging;
     BOOL _isLoading;

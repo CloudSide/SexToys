@@ -98,7 +98,7 @@
     
     NSString *goodsUrlString = [[self.contentController.contentList objectAtIndex:_page] objectForKey:@"click_url"];
     
-    self.loadRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[kApiItemURL stringByAppendingFormat:@"?url=%@", [goodsUrlString URLEncodedString]]]];
+    self.loadRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[kApiItemURL stringByAppendingFormat:@"&url=%@", [goodsUrlString URLEncodedString]]]];
     
     [_loadRequest setDownloadCache:[ASIDownloadCache sharedCache]];
     [_loadRequest setCachePolicy:ASIAskServerIfModifiedWhenStaleCachePolicy];//ASIAskServerIfModifiedCachePolicy
