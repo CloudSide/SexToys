@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LockerViewController.h"
+#import "UpdateCheck.h"
 
 #define kImageViewDefaultTag        2031
 #define kUMENGAPPKEY                @"50c31f9f5270156bcc00010c"
@@ -19,6 +20,7 @@
 @property (nonatomic) BOOL verifyPassed;
 @property (nonatomic) BOOL hasPasscode;
 @property (nonatomic) BOOL isLocked;
+@property (nonatomic, retain) UpdateCheck *updateCheck;
 
 + (AppDelegate *)sharedAppDelegate;
 
