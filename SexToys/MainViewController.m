@@ -27,6 +27,7 @@
 @synthesize navigationController3 = _navigationController3;
 @synthesize navigationController4 = _navigationController4;
 @synthesize navigationController5 = _navigationController5;
+@synthesize updateCheck = _updateCheck;
 
 
 - (void)setTheControllers {
@@ -62,6 +63,7 @@
     [_navigationController3 release];
     [_navigationController4 release];
     [_navigationController5 release];
+    [_updateCheck release];
     
     [super dealloc];
 }
@@ -86,6 +88,8 @@
     
     [super viewDidLoad];
     [self setTheControllers];
+    self.updateCheck = [[[UpdateCheck alloc] init]  autorelease];
+    [_updateCheck check];
 }
 
 

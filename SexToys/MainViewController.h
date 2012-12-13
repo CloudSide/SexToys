@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MainSlideViewController.h"
+#import "UpdateCheck.h"
 
 
 @interface MainViewController : UITabBarController <UITabBarControllerDelegate> {
@@ -20,6 +21,8 @@
 @property (strong, nonatomic) UINavigationController *navigationController3;
 @property (strong, nonatomic) UINavigationController *navigationController4;
 @property (strong, nonatomic) UINavigationController *navigationController5;
+
+@property (strong, nonatomic) UpdateCheck *updateCheck;
 
 
 - (void)makeTabBarHidden:(BOOL)hide;

@@ -20,11 +20,9 @@
 @synthesize verifyPassed = _verifyPassed;
 @synthesize hasPasscode = _hasPasscode;
 @synthesize isLocked = _isLocked;
-@synthesize updateCheck = _updateCheck;
 
 - (void)dealloc {
     
-    [_updateCheck release];
     [_window release];
     [_navigationController release];
     [super dealloc];
@@ -33,9 +31,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     [MobClick startWithAppkey:kUMENGAPPKEY];
-    self.updateCheck = [[[UpdateCheck alloc] init]  autorelease];
-    
-    
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 
@@ -85,8 +80,6 @@
         [_navigationController presentModalViewController:lockerNavController animated:YES];
         [locker release];
     }
-    
-    [_updateCheck check];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
