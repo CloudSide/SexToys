@@ -29,13 +29,13 @@
 
 #define kApiDomain                          @"http://qingqubao.net/"
 
-#define kApiItemsOfGuideURL                 [kApiDomain stringByAppendingFormat:@"xjb/guide.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
-#define kApiItemURL                         [kApiDomain stringByAppendingFormat:@"xjb/get_product_detail.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
-#define kApiFeedbackURL                     [kApiDomain stringByAppendingFormat:@"xjb/feedback.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
-#define kApiCatesURL                        [kApiDomain stringByAppendingFormat:@"xjb/get_cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
-#define kApiItemsOfCateURL                  [kApiDomain stringByAppendingFormat:@"xjb/cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
-#define kApiAboutURL                        [kApiDomain stringByAppendingFormat:@"xjb/about.html#%@", [Static infoValueForKey:@"CFBundleShortVersionString"]]
-#define kApiTopicURL                        [kApiDomain stringByAppendingFormat:@"xjb/topic.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiItemsOfGuideURL                 [kApiDomain stringByAppendingFormat:@"v1/guide.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiItemURL                         [kApiDomain stringByAppendingFormat:@"v1/get_product_detail.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiFeedbackURL                     [kApiDomain stringByAppendingFormat:@"v1/feedback.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiCatesURL                        [kApiDomain stringByAppendingFormat:@"v1/get_cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiItemsOfCateURL                  [kApiDomain stringByAppendingFormat:@"v1/cats.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
+#define kApiAboutURL                        [kApiDomain stringByAppendingFormat:@"v1/about.html#%@", [Static infoValueForKey:@"CFBundleShortVersionString"]]
+#define kApiTopicURL                        [kApiDomain stringByAppendingFormat:@"v1/topic.php?v=%@", [Static infoValueForKey:@"CFBundleVersion"]]
 
 
 

@@ -1167,7 +1167,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-all_load";
-				PROVISIONING_PROFILE = "7CF7C1D7-CCF0-40E9-8003-316A5F23E4A6";
+				PROVISIONING_PROFILE = "11B660C8-4BDD-4F7F-81CF-7D6FCE23C952";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1198,7 +1198,6 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Bruce Chen";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SexToys/SexToys-Prefix.pch";
 				INFOPLIST_FILE = "SexToys/SexToys-Info.plist";
@@ -1210,7 +1209,6 @@
 					"\"$(SRCROOT)/SexToys\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7CF7C1D7-CCF0-40E9-8003-316A5F23E4A6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
