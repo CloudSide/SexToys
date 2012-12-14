@@ -686,8 +686,6 @@ request = _request;
             
         } else {
             
-            [self.items addObjectsFromArray:res];
-            
             if (_page == 1) {
                 
                 [self.items removeAllObjects];
