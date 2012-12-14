@@ -143,6 +143,7 @@ request = _request;
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     
+    [self.request clearDelegatesAndCancel];
     self.request = request;
     [_request setDownloadCache:[ASIDownloadCache sharedCache]];
     [_request setCachePolicy:ASIOnlyLoadIfNotCachedCachePolicy];
