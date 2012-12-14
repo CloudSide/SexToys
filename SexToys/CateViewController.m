@@ -176,10 +176,12 @@
     
         if ([[LdbHandler sharedDb] getDictionary:@"cate_list_data"]) {
         
-            if ([[[[LdbHandler sharedDb] getDictionary:@"cate_list_data"] objectForKey:@"data"] isKindOfClass:[NSArray class]]) {
+            NSDictionary *cateInfo = [[LdbHandler sharedDb] getDictionary:@"cate_list_data"];
+            
+            if ([cateInfo isKindOfClass:[NSDictionary class]] && [[cateInfo objectForKey:@"data"] isKindOfClass:[NSArray class]]) {
                 
-                NSArray *item = (NSArray *)[[[LdbHandler sharedDb] getDictionary:@"cate_list_data"] objectForKey:@"data"];
-                [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"load_success(%@)", [item JSONRepresentation]]];
+                //NSArray *item = (NSArray *)[[[LdbHandler sharedDb] getDictionary:@"cate_list_data"] objectForKey:@"data"];
+                [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"load_success(%@)", [cateInfo JSONRepresentation]]];
             
             } else {
             
@@ -242,7 +244,7 @@
                 [[LdbHandler sharedDb] putObject:[[request responseString] JSONValue] forKey:@"cate_list_data"];
             }
             
-            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"load_success(%@)", [item JSONRepresentation]]];
+            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"load_success(%@)", [request responseString]]];
             
             return;
         }

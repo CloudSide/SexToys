@@ -85,22 +85,38 @@
                                     "</li>";
              */
             
+            var width = 56;
+            var height = 56;
+            
+            if (typeof(cate_data["scale"]) != "undefined" && typeof(cate_data["columns"]) != "undefined") {
+            
+                width = height * cate_data["scale"];
+            }
+            
             var html = "";
 			
-			 for (i=0; i<cate_data.length; i++) {
+			 for (i=0; i<cate_data["data"].length; i++) {
 				   
 				//alert(cate_data[i]["id"]);   
                 html += 			"\n" +
 									"<li>" +
-									"<a href=\"javascript:selected('" + cate_data[i]["id"]  + "', '" + cate_data[i]["cats_name"]  + "');\">" +
-                   					"<img width=\"56px\" height=\"56px\" src=\"" + cate_data[i]["img"] + "\" /><br>" +
-                    				"<span>" + cate_data[i]["cats_name"] + "</span>" +
+									"<a href=\"javascript:selected('" + cate_data["data"][i]["id"]  + "', '" + cate_data["data"][i]["cats_name"]  + "');\">" +
+                   					"<img width=\"" + width + "px\" height=\"" + height + "px\" src=\"" + cate_data["data"][i]["img"] + "\" /><br>" +
+                    				"<span>" + cate_data["data"][i]["cats_name"] + "</span>" +
                 					"</a>" +  
 									"</li>"; 
             }
 			
 			$("#items").html(html);
 			$('a').css("color", "#21759B");
+            
+            if (typeof(cate_data["scale"]) != "undefined" && typeof(cate_data["columns"]) != "undefined") {
+                
+                if (cate_data["columns"] == 2) {
+                
+                    $(".main_content li").css({"width":160, "padding":"12px auto"});
+                }
+            }
 
 		}
 		
