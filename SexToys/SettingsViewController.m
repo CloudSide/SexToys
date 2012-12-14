@@ -228,15 +228,12 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    
     if (indexPath.section == 0) {
-        
         
         if (indexPath.row == 0) {
             
             [self openTaobao];
         }
-        
         
     } else if (indexPath.section == 1) {
         
