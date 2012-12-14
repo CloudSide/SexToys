@@ -202,6 +202,9 @@
     listViewController.cateId = [parms objectForKey:@"cate_id"];
     [self.navigationController pushViewController:listViewController animated:YES];
     
+    DDLogInfo(@"%@\t%@", @"category", [parms objectForKey:@"cate_id"]);
+    
+    
 /*
     ListViewController *listViewController = [[[ListViewController alloc] initWithNibName:@"ListViewController" bundle:nil] autorelease];
     listViewController.cateId = [parms objectForKey:@"cate_id"];

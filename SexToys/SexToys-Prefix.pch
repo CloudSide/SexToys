@@ -20,7 +20,26 @@
     #import "LdbHandler.h"
     #import "AppDelegate.h"
     #import "SBJson.h"
+    #import "DDLog.h"
+    #import "DDFileLogger.h"
+    #import "DDASLLogger.h"
+    #import "DDTTYLogger.h"
+    #import "CompressingLogFileManager.h"
+    #import "VdiskLogFormatter.h"
+    #import "CLogReport.h"
 #endif
+
+extern int ddLogLevel;
+
+#ifndef DEBUG
+#define NSLog(...)
+#endif
+
+#define kVdiskAppkey                                @"199631"
+#define kVdiskAppsecret                             @"f1d101270aa97ee55c6962d42d252eb9"
+
+
+
 
 
 

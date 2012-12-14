@@ -254,6 +254,9 @@
     UIViewController *viewController = nil;
     
     if (indexPath.section == 0) {
+                
+        DDLogInfo(@"%@\t%@", @"guide", [NSString stringWithFormat:@"%d", indexPath.row]);
+        
         
         if (indexPath.row == 0) {
             

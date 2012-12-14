@@ -161,6 +161,7 @@
 		32EC1969167B2ED900755A44 /* ContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC195E167B2ED900755A44 /* ContextFilterLogFormatter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EC196A167B2ED900755A44 /* DispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC1960167B2ED900755A44 /* DispatchQueueLogFormatter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		32EC196B167B2ED900755A44 /* VdiskLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC1962167B2ED900755A44 /* VdiskLogFormatter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		32EC1979167B30FC00755A44 /* CLogReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC1978167B30FC00755A44 /* CLogReport.m */; };
 		3F432AEA167978CC001ECBDE /* gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F432AE9167978CC001ECBDE /* gray.png */; };
 		3F6459F21675AE6A006935C8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6459F01675AE6A006935C8 /* SettingsViewController.m */; };
 		3F6459F31675AE6A006935C8 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F6459F11675AE6A006935C8 /* SettingsViewController.xib */; };
@@ -426,6 +427,8 @@
 		32EC1960167B2ED900755A44 /* DispatchQueueLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DispatchQueueLogFormatter.m; sourceTree = "<group>"; };
 		32EC1961167B2ED900755A44 /* VdiskLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VdiskLogFormatter.h; sourceTree = "<group>"; };
 		32EC1962167B2ED900755A44 /* VdiskLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VdiskLogFormatter.m; sourceTree = "<group>"; };
+		32EC1977167B30FC00755A44 /* CLogReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLogReport.h; sourceTree = "<group>"; };
+		32EC1978167B30FC00755A44 /* CLogReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLogReport.m; sourceTree = "<group>"; };
 		3F432AE9167978CC001ECBDE /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gray.png; sourceTree = "<group>"; };
 		3F6459EF1675AE6A006935C8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3F6459F01675AE6A006935C8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
@@ -909,6 +912,8 @@
 		32EC195A167B2ED900755A44 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				32EC1977167B30FC00755A44 /* CLogReport.h */,
+				32EC1978167B30FC00755A44 /* CLogReport.m */,
 				32EC195B167B2ED900755A44 /* CompressingLogFileManager.h */,
 				32EC195C167B2ED900755A44 /* CompressingLogFileManager.m */,
 				32EC195D167B2ED900755A44 /* ContextFilterLogFormatter.h */,
@@ -1172,6 +1177,7 @@
 				32EC1969167B2ED900755A44 /* ContextFilterLogFormatter.m in Sources */,
 				32EC196A167B2ED900755A44 /* DispatchQueueLogFormatter.m in Sources */,
 				32EC196B167B2ED900755A44 /* VdiskLogFormatter.m in Sources */,
+				32EC1979167B30FC00755A44 /* CLogReport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

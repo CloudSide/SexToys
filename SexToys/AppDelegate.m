@@ -14,6 +14,10 @@
 #import "Static.h"
 #import "MobClick.h"
 
+
+int ddLogLevel;
+
+
 @implementation AppDelegate
 
 @synthesize navigationController = _navigationController;
@@ -31,6 +35,38 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     [MobClick startWithAppkey:kUMENGAPPKEY];
+    
+    
+    
+#ifdef DEBUG
+    ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+    ddLogLevel = LOG_LEVEL_INFO;
+#endif
+    
+    VdiskLogFormatter *formatter = [[[VdiskLogFormatter alloc] init] autorelease];
+    
+#ifdef DEBUG
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+#endif
+    
+    CompressingLogFileManager *logFileManager = [[[CompressingLogFileManager alloc] init] autorelease];
+    DDFileLogger *fileLogger = [[[DDFileLogger alloc] initWithLogFileManager:logFileManager] autorelease];
+    [fileLogger setLogFormatter:formatter];
+    
+    fileLogger.maximumFileSize  = 1024 * 1024;
+	fileLogger.rollingFrequency =   60 * 60 * 4;
+	fileLogger.logFileManager.maximumNumberOfLogFiles = 5;
+    
+    [DDLog addLogger:fileLogger];
+    
+    CLogReport *logReport = [[[CLogReport alloc] initWithLogsDirectory:[logFileManager logsDirectory]] autorelease];
+    [CLogReport setSharedLogReport:logReport];
+    
+    
+    DDLogInfo(@"%@\t%@", @"app_launched", @"-");
+    
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 

@@ -186,8 +186,9 @@
         [_barLike.button setImage:[UIImage imageNamed:@"ico_like_small.png"] forState:UIControlStateNormal];
         _hud.labelText = @"收藏 -1";
         
-    } else {
+        DDLogInfo(@"%@\t%@", @"unfavorite", [obj objectForKey:@"num_iid"]);
         
+    } else {
         
         NSDictionary *obj = self.contentController.currentItem;
         [[LdbHandler sharedDb] putObject:obj forKey:[@"fav_" stringByAppendingFormat:@"%@", [obj objectForKey:@"num_iid"]]];
@@ -195,6 +196,8 @@
         _isFaved = YES;
         [_barLike.button setImage:[UIImage imageNamed:@"ico_like_small_s.png"] forState:UIControlStateNormal];
         _hud.labelText = @"收藏 +1";
+        
+        DDLogInfo(@"%@\t%@", @"favorite", [obj objectForKey:@"num_iid"]);
     }
     
     
@@ -221,6 +224,9 @@
 - (void)openURL:(NSDictionary *)parms {
     
 
+    DDLogInfo(@"%@\t%@", @"buy", [self.contentController.currentItem objectForKey:@"num_iid"]);
+    
+    
     SVWebViewController *webViewController = [[[SVWebViewController alloc] initWithURL:[NSURL URLWithString:[self.contentController.currentItem objectForKey:@"click_url"]]] autorelease];
     
     webViewController.availableActions = SVWebViewControllerAvailableActionsNone | SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink;
@@ -432,12 +438,13 @@
 
 - (void)reviews {
     
-    
     SVWebViewController *webViewController = [[[SVWebViewController alloc] initWithURL:[NSURL URLWithString:[self.contentController.currentItem objectForKey:@"shop_click_url"]]] autorelease];
     
     webViewController.availableActions = SVWebViewControllerAvailableActionsNone | SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink;
     
 	[_contentController.navigationController pushViewController:webViewController animated:YES];
+    
+    DDLogInfo(@"%@\t%@", @"shop", [self.contentController.currentItem objectForKey:@"num_iid"]);
     
     //[self reviews:nil];
 }
