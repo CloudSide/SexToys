@@ -143,7 +143,7 @@
             
         } else if (indexPath.row == 1) {
         
-            cell.textLabel.text = @"客服QQ: 12562426";
+            cell.textLabel.text = @"客服QQ: 1523893928";
             //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         } else if (indexPath.row == 2) {
