@@ -266,7 +266,7 @@ request = _request;
     [_loadingLabel release];
     
     [_request clearDelegatesAndCancel];
-    [_request release], _request = nil;
+    self.request = nil;
     
     [super dealloc];
 }

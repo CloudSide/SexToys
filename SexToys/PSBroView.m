@@ -86,7 +86,7 @@ request = _request;
     self.captionLabel = nil;
     self.captionLabel2 = nil;
     
-    [_request cancel];
+    [_request clearDelegatesAndCancel];
     self.request = nil;
     
     [super dealloc];
