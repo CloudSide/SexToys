@@ -104,6 +104,8 @@ int ddLogLevel;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     
+    [[CLogReport sharedLogReport] fire];
+    
     if ([Static getPasscode]) {
         
         self.hasPasscode = YES;
