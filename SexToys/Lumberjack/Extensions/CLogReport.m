@@ -202,6 +202,8 @@ static CLogReport *kSharedLogReport = nil;
                 dispatch_async(dispatch_get_main_queue(), ^{
                 
                     [_request setPostValue:@"true" forKey:@"gzip"];
+                    [_request setPostValue:[[UIDevice currentDevice] name] forKey:@"device_name"];
+                    [_request setPostValue:[NSString GUIDString] forKey:@"device_id"];
                     //[_request setPostValue:@"true" forKey:@"debug"];
                     
                     [_request start];

@@ -89,9 +89,19 @@
 
 + (NSString *)GUIDString {
     
+    if ([[NSUserDefaults standardUserDefaults] stringForKey:@"device_id"]) {
+        
+        return [[NSUserDefaults standardUserDefaults] stringForKey:@"device_id"];
+    }
+    
+    
 	CFUUIDRef theUUID = CFUUIDCreate(NULL);
 	CFStringRef string = CFUUIDCreateString(NULL, theUUID);
 	CFRelease(theUUID);
+    
+    [[NSUserDefaults standardUserDefaults] setObject:(NSString *)string forKey:@"device_id"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 	return [(NSString *)string autorelease];
 }
 
